@@ -1,0 +1,29 @@
+UCLIBCPP_DIR	= $(HOME)/Source/uClibc++ ;
+
+rule FixCopy
+{
+	Depends $(<) : $(>) ;
+	Clean clean : $(<) ;
+	Depends all : $(<) ;
+}
+
+actions FixCopy
+{
+	sed -e "s/<utility>/<utility.h>/g" $(>) > $(<)
+}
+
+for file in [ GLOB $(UCLIBCPP_DIR)/include : [^.]* ]
+{
+	local _o = $(file:D=$(PWD)) ;
+	if ( $(file:B) = "utility" )
+	{
+		_o = $(_o:S=.h) ;
+	}	
+	FixCopy $(_o) : $(file) ;
+}
+
+for file in [ GLOB $(UCLIBCPP_DIR)/src : *.cpp ]
+{
+	local _o = $(file:D=$(PWD)) ;
+	FixCopy $(_o) : $(file) ;
+}
