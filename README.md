@@ -20,7 +20,18 @@ of the distribution into the 'libraries' folder under your sketchbook.  For
 example, my sketchbook is at /home/maniacbug/Source/Arduino, so this
 library is in /home/maniacbug/Source/Arduino/libraries/StandardCplusplus .
 
-Be sure to reset your Arduino IDE after using it.
+Be sure to reset your Arduino IDE after installing it.
+
+## How do I try it out?
+
+From the Arduino IDE, navigate the menus to:
+File > Examples > StandardCplusplus > string\_vector
+
+Upload that, set your serial monitor to 57600 baud, and check the output.
+
+## How do I learn more?
+
+The web is your friend.  [cplusplus.com](http://cplusplus.com/reference/) is my personal favorite reference.
 
 ## Which versions does it work with?
 
