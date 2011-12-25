@@ -2,7 +2,7 @@
 
 ## What is this?
 
-This is a straight port of [http://cxx.uclibc.org/](uClibc++) for Arduino.
+This is a straight port of [uClibc++](http://cxx.uclibc.org/) for Arduino.
 I have cut nothing out and held nothing back.  Use with care!
 
 That said, I have used uClibc++'s own internal configuration to pare back
@@ -10,7 +10,7 @@ un-needed stuff, like support for floats, gratuitous template
 instantiations and other things.  See system\_configuration.h for all of
 those gory details.
 
-Plus I added in [http://andybrown.me.uk/ws/2011/01/15/the-standard-template-library-stl-for-avr-with-c-streams/#IDComment246044033](Andy Brown's)
+Plus I added in [Andy Brown's](http://andybrown.me.uk/ws/2011/01/15/the-standard-template-library-stl-for-avr-with-c-streams/#IDComment246044033)
 excellent ohserialstream class for managing the HardwareSerial as an ostream.
 
 ## How do I install it?
