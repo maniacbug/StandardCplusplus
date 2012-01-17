@@ -4,7 +4,12 @@
 
 using namespace std;
 
-ohserialstream cout(Serial);
+// <iostream> declares cout/cerr, but the application must define them
+// because it's up to you what to do with them.
+namespace std
+{
+  ohserialstream cout(Serial);
+}
 
 void setup(void)
 {

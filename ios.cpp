@@ -33,7 +33,6 @@
 namespace std{
 
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
-#ifndef ARDUINO
 	_UCXXLOCAL int ios_base::Init::init_cnt = 0;	//Needed to ensure the static value is created
 
 //Create buffers first
@@ -90,9 +89,6 @@ namespace std{
 	_UCXXEXPORT wostream wclog(&_wclog_filebuf);
 #endif
 
-#endif // not ARDUINO
-
-#ifdef ARDUINO
 
 #ifdef __UCLIBCXX_SUPPORT_COUT__
 	_UCXXEXPORT ohserialstream cout(Serial);
@@ -106,9 +102,6 @@ namespace std{
 #ifdef __UCLIBCXX_SUPPORT_CLOG__
 	_UCXXEXPORT ohserialstream clog(Serial);
 #endif
-
-#endif // ARDUINO
-
 
 	_UCXXEXPORT ios_base::Init::Init(){
 		if(init_cnt == 0){	//Need to construct cout et al
@@ -201,7 +194,6 @@ namespace std{
 		mprecision = prec;
 		return temp;
 	}
-
 	_UCXXEXPORT streamsize ios_base::width(streamsize wide){
 		streamsize temp = mwidth;
 		mwidth = wide;

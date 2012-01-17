@@ -27,6 +27,7 @@
 #include <istream>
 #include <ostream>
 #ifdef ARDUINO
+#include <serstream>
 #else
 #include <fstream>
 #endif
