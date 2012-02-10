@@ -44,16 +44,6 @@ namespace std {
 	template <class charT, class traits> basic_ostream<charT,traits>& endl(basic_ostream<charT,traits>& os);
 	template <class charT, class traits> basic_ostream<charT,traits>& ends(basic_ostream<charT,traits>& os);
 	template <class charT, class traits> basic_ostream<charT,traits>& flush(basic_ostream<charT,traits>& os);
-#if defined( __AVR__ )
-	const char* _P(const char* p);
-#if defined( __UCLIBCXX_COMPILE_OSTREAM__)
-	const char* _P(const char* p) {
-		static char buffer[64];
-		strlcpy_P(buffer,p,sizeof(buffer));
-		return buffer;
-	}
-#endif
-#endif
 
 	template <class charT, class traits > class _UCXXEXPORT basic_ostream
 		: virtual public basic_ios<charT,traits>
@@ -99,6 +89,9 @@ namespace std {
 		basic_ostream<charT,traits>& operator<<(long double f);
 		basic_ostream<charT,traits>& operator<<(void* p);
 		basic_ostream<charT,traits>& operator<<(basic_streambuf<char_type,traits>* sb);
+#if defined( __AVR__ )
+		basic_ostream<charT,traits>& operator<<(prog_char* p);
+#endif
 
 		_UCXXEXPORT basic_ostream<charT,traits>& put(char_type c){
 			if(basic_ostream<charT,traits>::traits_type::eq_int_type(
@@ -278,6 +271,18 @@ namespace std {
 		}
 		return *this;
 	}
+#if defined( __AVR__ )
+	template <class charT, class traits> _UCXXEXPORT basic_ostream<charT,traits>& basic_ostream<charT, traits>::operator<<(prog_char* p ){
+		sentry s(*this);
+		char buffer[64];
+		size_t p_len = strlcpy_P(buffer,p,sizeof(buffer));
+		printout(buffer, (p_len>=sizeof(buffer)) ? sizeof(buffer) - 1 : p_len ); 
+		if(basic_ios<charT,traits>::flags() & ios_base::unitbuf){
+			flush();
+		}
+		return *this;
+	}
+#endif
 
 
 	/*Template Specializations*/
@@ -466,7 +471,6 @@ namespace std {
 		os.flush();
 		return os;
 	}
-
 
 
 #ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
