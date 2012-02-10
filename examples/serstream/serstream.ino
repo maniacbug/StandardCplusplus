@@ -17,8 +17,13 @@ void setup(void)
 
   cout << "Hello, world." << endl;
 
-  cout << PSTR("I use up absolutely no RAM space whatsoever") << endl;
-  cout << PSTR("so you can use as many PSTR strings as you want!") << endl;
+  cout << _P(PSTR("I use up absolutely no RAM space whatsoever")) << endl;
+  cout << _P(PSTR("so you can use as many PSTR strings as you want!")) << endl;
+
+  float fmax = __FLT_MAX__, fmin = __FLT_MIN__;
+  cout.precision(9);
+  cout << "Float " << scientific << fmax << endl; 
+  cout << "Float " << scientific << fmin << endl; 
 }
 
 void loop(void)
