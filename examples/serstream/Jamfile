@@ -1,6 +1,7 @@
 # (1) Project Information
 
 PROJECT_LIBS 	= StandardCplusplus ; 
+PROJECT_DIRS	= $(PWD) ;
 
 # (2) Board Information
 
@@ -22,25 +23,27 @@ PORT_u0 	= /dev/ttyUSB0 ;
 PORT_u1 	= /dev/ttyUSB1 ;
 PORT_u2 	= /dev/ttyUSB2 ;
 
-# Host-specific overrides for locations 
-
-if $(OS) = MACOSX 
-{
-OLD_DIR 	= /opt/arduino-0021 ;
-AVR_TOOLS_PATH 	= $(OLD_DIR)/hardware/tools/avr/bin ;
-AVRDUDECONFIG_PATH = $(OLD_DIR)/hardware/tools/avr/etc ;
-ARDUINO_AVR 	= /usr/lib/avr/include ;
-}
-
-# (4) Directories where tools and libraries are located
+# (4) Location of AVR tools
 #
 # This configuration assumes using avr-tools that were obtained separate from the Arduino
 # distribution. 
 
-AVR_TOOLS_PATH 	?= /usr/bin ;
+if $(OS) = MACOSX 
+{
+	AVR_BIN 	?= /usr/local/avrtools/bin ;
+	AVR_ETC 	?= /usr/local/avrtools/etc ;
+	AVR_INCLUDE	?= /usr/local/avrtools/include ; 
+}
+else
+{
+	AVR_BIN 	?= /usr/bin ;
+	AVR_INCLUDE 	?= /usr/lib/avr/include ;
+	AVR_ETC 	?= /etc ; 
+}
+
+# (5) Directories where Arduino core and libraries are located
+
 ARDUINO_DIR 	?= /opt/Arduino ;
-AVR_HDRS 	?= /usr/lib/avr/include ;
-AVRDUDECONF_PATH ?= /etc ; 
 ARDUINO_CORE 	= $(ARDUINO_DIR)/hardware/arduino/cores/$(CORE) $(ARDUINO_DIR)/hardware/arduino/variants/$(VARIANT) ;
 ARDUINO_LIB 	= $(ARDUINO_DIR)/libraries ;
 SKETCH_LIB      = $(HOME)/Source/Arduino/libraries ;
@@ -52,24 +55,26 @@ SKETCH_LIB      = $(HOME)/Source/Arduino/libraries ;
 
 # Tool locations
 
-CC	  	= $(AVR_TOOLS_PATH)/avr-gcc ;
-C++	 	= $(AVR_TOOLS_PATH)/avr-g++ ;
-LINK	  	= $(AVR_TOOLS_PATH)/avr-gcc ;
-OBJCOPY 	= $(AVR_TOOLS_PATH)/avr-objcopy ;
-AVRDUDE 	= $(AVR_TOOLS_PATH)/avrdude ;
+CC	  	= $(AVR_BIN)/avr-gcc ;
+C++	 	= $(AVR_BIN)/avr-g++ ;
+LINK	  	= $(AVR_BIN)/avr-gcc ;
+AR		= $(AVR_BIN)/avr-ar rcs ;
+RANLIB		= ;
+OBJCOPY 	= $(AVR_BIN)/avr-objcopy ;
+AVRDUDE 	?= $(AVR_BIN)/avrdude ;
 
 # Flags
 
 DEFINES  	+= F_CPU=$(F_CPU)L ARDUINO=$(ARDUINO_VERSION) VERSION_H ;
 OPTIM		= -Os ;
-CCFLAGS  	= -Wall -Wextra -mmcu=$(MCU) -ffunction-sections -fdata-sections ;
+CCFLAGS  	= -Wall -Wextra -Wno-strict-aliasing -mmcu=$(MCU) -ffunction-sections -fdata-sections ;
 C++FLAGS  	= $(CCFLAGS) -fno-exceptions -fno-strict-aliasing ;
 LINKFLAGS  	= $(OPTIM) -lm -Wl,--gc-sections -mmcu=$(MCU) ;
-AVRDUDEFLAGS	= -V -F -D -C $(AVRDUDECONF_PATH)/avrdude.conf -p $(MCU) -c $(UPLOAD_PROTOCOL) -b $(UPLOAD_SPEED) ;
+AVRDUDEFLAGS	= -V -F -D -C $(AVR_ETC)/avrdude.conf -p $(MCU) -c $(UPLOAD_PROTOCOL) -b $(UPLOAD_SPEED) ;
 
 # Search everywhere for headers
 
-HDRS  	 	= $(PWD) $(AVR_HDRS) $(ARDUINO_CORE) [ GLOB $(ARDUINO_LIB) $(SKETCH_LIB) : [^.]* ] ;
+HDRS  	 	= $(PROJECT_DIRS) $(AVR_INCLUDE) $(ARDUINO_CORE) $(ARDUINO_LIB)/$(PROJECT_LIBS) $(ARDUINO_LIB)/$(PROJECT_LIBS)/utility $(SKETCH_LIB)/$(PROJECT_LIBS) ;
 
 # Output locations
 
@@ -147,6 +152,12 @@ rule Objects
         }
 }
 
+rule Library
+{
+	LibraryFromObjects $(<) : $(>:B)$(SUFOBJ) ;
+	Objects $(>) ;
+}
+
 rule Main
 {
         MainFromObjects $(<) : $(>:B)$(SUFOBJ) ;
@@ -181,28 +192,28 @@ actions UploadAction
 	$(AVRDUDE) $(AVRDUDEFLAGS) -P $(<) $(AVRDUDE_WRITE_FLASH) -U flash:w:$(>):i
 }
 
+rule Arduino
+{
+	LINKFLAGS on $(<) = $(LINKFLAGS) -Wl,-Map=$(LOCATE_TARGET)/$(<:B).map ;
+	Main $(<) : $(>) ;
+	LinkLibraries $(<) : libs core ;
+	Hex $(<:B).hex : $(<) ;
+	for _p in $(PORTS)
+	{
+		Upload $(_p) : $(PORT_$(_p)) : $(<:B).hex ;
+	}
+}
+
 #
 # Targets
 #
 
 # Grab everything from the core directory
-CORE_MODULES  	= [ GLOB $(ARDUINO_CORE) : *.c *.cpp ] ;
+Library core : [ GLOB $(ARDUINO_CORE) : *.c *.cpp ] ;
 
 # Grab everything from libraries.  To avoid this "grab everything" behaviour, you
 # can specify specific modules to pick up in PROJECT_MODULES
-LIB_MODULES  	= [ GLOB $(ARDUINO_LIB)/$(PROJECT_LIBS) $(SKETCH_LIB)/$(PROJECT_LIBS) : *.cpp ] ;
-
-# Grab everything from the current dir
-PROJECT_MODULES += [ GLOB $(PWD) : *.c *.cpp *.pde *.ino ] ;
+Library libs : [ GLOB $(ARDUINO_LIB)/$(PROJECT_LIBS) $(ARDUINO_LIB)/$(PROJECT_LIBS)/utility $(SKETCH_LIB)/$(PROJECT_LIBS) : *.cpp *.c ] ;
 
 # Main output executable
-MAIN		= $(PWD:B).elf ;
-
-Main $(MAIN) : $(CORE_MODULES) $(LIB_MODULES) $(PROJECT_MODULES) ;
-Hex $(MAIN:B).hex : $(MAIN) ;
-
-# Upload targets
-for _p in $(PORTS)
-{
-	Upload $(_p) : $(PORT_$(_p)) : $(MAIN:B).hex ;
-}
+Arduino $(PWD:B).elf : $(PROJECT_MODULES) [ GLOB $(PROJECT_DIRS) : *.c *.cpp *.pde *.ino ] ;

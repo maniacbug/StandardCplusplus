@@ -29,6 +29,7 @@
 
 #if defined( __AVR__ )
 #include <avr/pgmspace.h>
+class __FlashStringHelper;
 #endif
 
 #pragma GCC visibility push(default)
@@ -90,7 +91,7 @@ namespace std {
 		basic_ostream<charT,traits>& operator<<(void* p);
 		basic_ostream<charT,traits>& operator<<(basic_streambuf<char_type,traits>* sb);
 #if defined( __AVR__ )
-		basic_ostream<charT,traits>& operator<<(prog_char* p);
+		basic_ostream<charT,traits>& operator<<(const __FlashStringHelper* p);
 #endif
 
 		_UCXXEXPORT basic_ostream<charT,traits>& put(char_type c){
@@ -272,10 +273,10 @@ namespace std {
 		return *this;
 	}
 #if defined( __AVR__ )
-	template <class charT, class traits> _UCXXEXPORT basic_ostream<charT,traits>& basic_ostream<charT, traits>::operator<<(prog_char* p ){
+	template <class charT, class traits> _UCXXEXPORT basic_ostream<charT,traits>& basic_ostream<charT, traits>::operator<<(const __FlashStringHelper* p ){
 		sentry s(*this);
 		char buffer[64];
-		size_t p_len = strlcpy_P(buffer,p,sizeof(buffer));
+		size_t p_len = strlcpy_P(buffer,reinterpret_cast<const char*>(p),sizeof(buffer));
 		printout(buffer, (p_len>=sizeof(buffer)) ? sizeof(buffer) - 1 : p_len ); 
 		if(basic_ios<charT,traits>::flags() & ios_base::unitbuf){
 			flush();
