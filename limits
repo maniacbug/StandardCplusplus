@@ -21,7 +21,8 @@
 #ifndef __STD_HEADER_LIMITS
 #define __STD_HEADER_LIMITS 1
 
-#warning limits header is nowhere complete or accurate
+// Yeah, yeah we know
+//#warning limits header is nowhere complete or accurate
 
 #pragma GCC visibility push(default)
 
