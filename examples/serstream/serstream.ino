@@ -23,7 +23,9 @@ void setup(void)
   float fmax = __FLT_MAX__, fmin = __FLT_MIN__;
   cout.precision(9);
   cout << "Float " << scientific << fmax << endl; 
-  cout << "Float " << scientific << fmin << endl; 
+  cout << "Float " << scientific << fmin << endl;
+
+  cout << "+OK" << endl;
 }
 
 void loop(void)
