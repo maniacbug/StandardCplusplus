@@ -239,6 +239,23 @@ namespace std{
 
 #endif	//__STRICT_ANSI__
 
+	template <class traits> class _UCXXEXPORT __ostream_printout<traits, char, float>{
+	public:
+		static void printout(basic_ostream<char, traits >& stream, const float f)
+		{
+			char buffer[32];
+			int length;
+			
+			//length = snprintf(buffer, 32, "%*.*f",static_cast<int>(stream.width()),static_cast<int>(stream.precision()), f);
+			length = strlen(dtostrf(f, static_cast<int>(stream.width()), static_cast<int>(stream.precision()), buffer));
+					
+			stream.printout(buffer, length);
+			if(stream.flags() & ios_base::unitbuf){
+				stream.flush();
+			}
+		}
+	};
+
 	template <class traits> class _UCXXEXPORT __ostream_printout<traits, char, double>{
 	public:
 		static void printout(basic_ostream<char, traits >& stream, const double f)
@@ -247,14 +264,30 @@ namespace std{
 			int length;
 			if(stream.flags() & ios_base::scientific){
 				if(stream.flags() & ios_base::uppercase){
+#if defined( __AVR__ )
+					length = strlen(dtostre(f, buffer, static_cast<int>(stream.precision()),  0x04 ));
+#else		
 					length = snprintf(buffer, 32, "%*.*E", static_cast<int>(stream.width()),static_cast<int>(stream.precision()), f);
+#endif
 				}else{
+#if defined( __AVR__ )
+					length = strlen(dtostre(f, buffer, static_cast<int>(stream.precision()), 0));
+#else				
 					length = snprintf(buffer, 32, "%*.*e", static_cast<int>(stream.width()),static_cast<int>(stream.precision()), f);
+#endif					
 				}
 			} else if(stream.flags() & ios_base::fixed){
+#if defined( __AVR__ )
+				length = strlen(dtostrf(f, static_cast<int>(stream.width()), static_cast<int>(stream.precision()), buffer));
+#else			
 				length = snprintf(buffer, 32, "%*.*f",static_cast<int>(stream.width()),static_cast<int>(stream.precision()), f);
+#endif				
 			} else {
+#if defined( __AVR__ )
+				length = strlen(dtostrf(f, static_cast<int>(stream.width()), static_cast<int>(stream.precision()), buffer));
+#else			
 				length = snprintf(buffer, 32, "%*.*g",static_cast<int>(stream.width()),static_cast<int>(stream.precision()), f);
+#endif				
 			}
 			stream.printout(buffer, length);
 			if(stream.flags() & ios_base::unitbuf){
