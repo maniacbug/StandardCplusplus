@@ -284,8 +284,12 @@ namespace std{
 		{
 			basic_string<char, traits > temp;
 			temp = _readTokenDecimal( stream);
-
+#if defined (__AVR__) 
+			var = strtod(temp.c_str(), NULL);
+#else
 			sscanf(temp.c_str(), "%g", &var);
+#endif
+			
 		}
 	};
 
@@ -295,7 +299,11 @@ namespace std{
 		{
 			basic_string<char, traits > temp;
 			temp = _readTokenDecimal( stream);
+#if defined (__AVR__)
+			var = strtod(temp.c_str(), NULL);
+#else			
 			sscanf(temp.c_str(), "%lg", &var);
+#endif			
 		}
 	};
 
@@ -305,7 +313,11 @@ namespace std{
 		{
 			basic_string<char, traits > temp;
 			temp = _readTokenDecimal( stream);
+#if defined (__AVR__)
+			var = strtod(temp.c_str(), NULL);
+#else			
 			sscanf(temp.c_str(), "%Lg", &var);
+#endif			
 		}
 	};
 

@@ -11,7 +11,7 @@
 /*
  * Target Features and Options
  */
-#undef __UCLIBCXX_HAS_FLOATS__
+#define __UCLIBCXX_HAS_FLOATS__
 #undef __UCLIBCXX_HAS_TLS__
 #define __WARNINGS__ "-Wall"
 #define __BUILD_EXTRA_LIBRARIES__ ""
