@@ -46,7 +46,7 @@ namespace std{
 	template<class InputIterator, class T> _UCXXEXPORT
 		InputIterator find(InputIterator first, InputIterator last, const T& value)
 	{
-		while(first !=last && *first != value){
+		while(first !=last && ! ( *first == value ) ){
 			++first;
 		}
 		return first;
