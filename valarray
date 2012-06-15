@@ -113,7 +113,12 @@ namespace std{
 		}
 
 		valarray<T>& operator=(const valarray<T>& v){
-			for(size_t i =0; i< length; ++i){
+			if (length != v.length) { // DR 630
+				delete [] data;
+				length = v.length;
+				data = new T[length];
+			}
+			for (size_t i = 0; i < length; ++i) {
 				data[i] = v.data[i];
 			}
 			return *this;
@@ -134,7 +139,7 @@ namespace std{
 		valarray<T>& operator=(const mask_array<T>&);
 		valarray<T>& operator=(const indirect_array<T>&);
 
-		T operator[](size_t t) const{
+		const T& operator[](size_t t) const{
 			return data[t];
 		}
 		T& operator[](size_t t){
@@ -184,10 +189,10 @@ namespace std{
 			}
 			return retval;
 		}
-		valarray<T> operator!() const{
-			valarray<T> retval(length);
-			for(size_t i = 0; i< length ; ++i){
-				retval.data[i] = !data[i];
+		valarray<bool> operator!() const{
+			valarray<bool> retval(length);
+			for (size_t i = 0; i < length ; ++i){
+				retval[i] = !data[i];
 			}
 			return retval;
 		}
@@ -235,7 +240,7 @@ namespace std{
 		}
 		valarray<T>& operator|= (const T& t){
 			for(size_t i=0;i<length; ++i){
-				data[i] != t;
+				data[i] |= t;
 			}
 			return *this;
 		}
@@ -346,17 +351,33 @@ namespace std{
 
 		valarray<T> shift (int n) const{
 			valarray<T> retval(length);
-			for(size_t i = 0; i < length ; ++i){
-				if(i + n > 0  && i + n < length){
-					retval.data[i] = data[i + n];
-				}
+			if (n < 0) {
+				if (-size_t(n) > length)
+					n = -int(length);
+			} else {
+				if (size_t(n) > length)
+					n = int(length);
+			}
+			for (size_t i = 0; i < length ; ++i) {
+				if ((n + i) < length)
+					retval.data[i] = data[n + i];
 			}
 			return retval;
 		}
 		valarray<T> cshift(int n) const{
 			valarray<T> retval(length);
-			for(size_t i = 0; i < length ; ++i){
-				retval.data[i] = data[ (i + n) % length ];
+			if (length == 0)
+				return retval;
+			if (n < 0) {
+				if (-size_t(n) > length)
+					n = -int(-size_t(n) % length);
+				n = length + n;
+			} else {
+				if (size_t(n) > length)
+					n = int(size_t(n) % length);
+			}
+			for (size_t i = 0; i < length ; ++i){
+				retval.data[i] = data[(n + i) % length];
 			}
 			return retval;
 		}
@@ -471,6 +492,7 @@ namespace std{
 		slice_array& operator=(const slice_array& sa){
 			array = sa.array;
 			s = sa.s;
+			return *this;
 		}
 
 	private:
@@ -486,7 +508,7 @@ namespace std{
 		valarray<size_t> str;
 
 	public:
-		gslice() : sta(0) { }
+		gslice() : sta(0), siz(), str() { } // DR 543
 		gslice(size_t s, const valarray<size_t>& l, const valarray<size_t>& d)
 			: sta(s), siz(l), str(d) {  }
 
@@ -802,7 +824,7 @@ namespace std{
 		}
 		return retval;
 	}
-	template<class T> valarray<bool> operator> (const T& rhs, const valarray<T>& lhs){
+	template<class T> valarray<bool> operator> (const T& lhs, const valarray<T>& rhs){
 		valarray<bool> retval(rhs.size());
 		for(size_t i = 0; i <retval.size(); ++i){
 			retval[i] = lhs > rhs[i];
@@ -873,122 +895,141 @@ namespace std{
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = abs(x[i]);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> acos (const valarray<T>& x){
 		valarray<T> retval(x.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = acos(x[i]);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> asin (const valarray<T>& x){
 		valarray<T> retval(x.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = asin(x[i]);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> atan (const valarray<T>& x){
 		valarray<T> retval(x.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = atan(x[i]);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> atan2(const valarray<T>& y, const valarray<T>& x){
 		valarray<T> retval(y.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = atan2(y[i], x[i]);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> atan2(const valarray<T>& y, const T& x){
 		valarray<T> retval(y.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = atan2(y[i], x);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> atan2(const T& y, const valarray<T>& x){
 		valarray<T> retval(x.size());
 		for(size_t i = 0; i < retval.size(); ++i){
-			retval[i] = abs(y, x[i]);
+			retval[i] = atan2(y, x[i]);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> cos  (const valarray<T>& x){
 		valarray<T> retval(x.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = cos(x[i]);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> cosh (const valarray<T>& x){
 		valarray<T> retval(x.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = cosh(x[i]);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> exp  (const valarray<T>& x){
 		valarray<T> retval(x.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = exp(x[i]);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> log  (const valarray<T>& x){
 		valarray<T> retval(x.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = log(x[i]);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> log10(const valarray<T>& x){
 		valarray<T> retval(x.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = log10(x[i]);
 		}
+		return retval;
 	}
-	template<class T> valarray<T> pow (const valarray<T>& x, const valarray<T>& y){
+	template<class T> valarray<T> pow  (const valarray<T>& x, const valarray<T>& y){
 		valarray<T> retval(x.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = pow(x[i], y[i]);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> pow  (const valarray<T>& x, const T& y){
 		valarray<T> retval(x.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = pow(x[i], y);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> pow  (const T& x, const valarray<T>& y){
-		valarray<T> retval(x.size());
+		valarray<T> retval(y.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = pow(x, y[i]);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> sin  (const valarray<T>& x){
 		valarray<T> retval(x.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = sin(x[i]);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> sinh (const valarray<T>& x){
 		valarray<T> retval(x.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = sinh(x[i]);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> sqrt (const valarray<T>& x){
 		valarray<T> retval(x.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = sqrt(x[i]);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> tan  (const valarray<T>& x){
 		valarray<T> retval(x.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = tan(x[i]);
 		}
+		return retval;
 	}
 	template<class T> valarray<T> tanh (const valarray<T>& x){
 		valarray<T> retval(x.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = tanh(x[i]);
 		}
-	}
-	
+		return retval;
+	}	
 }
 
 #pragma GCC visibility pop
