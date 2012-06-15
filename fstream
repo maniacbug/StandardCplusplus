@@ -647,7 +647,6 @@ template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
 	};
 
 
-#if 0
 #ifdef __UCLIBCXX_EXPAND_FSTREAM_CHAR__
 #ifndef __UCLIBCXX_COMPILE_FSTREAM__
 
@@ -662,8 +661,6 @@ template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
 	template <> _UCXXEXPORT basic_ifstream<char, char_traits<char> >::~basic_ifstream();
 
 #endif // __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
-
-#endif
 
 #endif
 #endif
