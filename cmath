@@ -22,7 +22,6 @@
 #ifndef __STD_HEADER_CMATH
 #define __STD_HEADER_CMATH 1
 
-#if ! defined(__AVR__)
 # undef abs
 # undef acos
 # undef asin
@@ -230,7 +229,6 @@ namespace std {
 #  endif	//	 __UCLIBCXX_HAS_LONG_DOUBLE__
 # endif	//	 __CORRECT_ISO_CPP_MATH_H_PROTO
 }
-#endif // ! defined(__AVR__)
 
 #endif	//__STD_HEADER_CMATH
 
