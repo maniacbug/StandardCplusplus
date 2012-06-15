@@ -185,11 +185,11 @@ protected:
 
 
 /* Non-member functions.  These are at the end because they are not associated with any
-   particular class.  These will be implemented as I figure out exactly what all of 
+   particular class.  These will be implemented as I figure out exactly what all of
    them are supposed to do, and I have time.
  */
 
-	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator< 
+	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator<
 		(const set<Key,Compare,Allocator>& x, const set<Key,Compare,Allocator>& y)
 	{
 		typename set<Key,Compare,Allocator>::const_iterator first1 = x.begin();
@@ -207,7 +207,7 @@ protected:
 			++first1;
 			++first2;
 		}
-                return first1==last1 && first2 != last2;
+		return first1==last1 && first2 != last2;
 	}
 
 	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator>
@@ -228,7 +228,7 @@ protected:
 			++first1;
 			++first2;
 		}
-                return first1!=last1 && first2 == last2;
+		return first1!=last1 && first2 == last2;
 	}
 
 	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator>=
@@ -249,7 +249,7 @@ protected:
 			++first1;
 			++first2;
 		}
-                return first1!=last1;
+		return first1!=last1;
 	}
 
 	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator<=
@@ -270,7 +270,7 @@ protected:
 			++first1;
 			++first2;
 		}
-                return first2!=last2;
+		return first2!=last2;
 	}
 	template <class Key, class Compare, class Allocator> _UCXXEXPORT void swap
 		(set<Key,Compare,Allocator>& x, set<Key,Compare,Allocator>& y)
@@ -288,7 +288,7 @@ protected:
 		return false;
 	}
 
-	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator< 
+	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator<
 		(const multiset<Key,Compare,Allocator>& x, const multiset<Key,Compare,Allocator>& y)
 	{
 		typename multiset<Key,Compare,Allocator>::const_iterator first1 = x.begin();
@@ -306,7 +306,7 @@ protected:
 			++first1;
 			++first2;
 		}
-                return first1==last1 && first2 != last2;
+		return first1==last1 && first2 != last2;
 	}
 
 	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator!=
@@ -324,10 +324,10 @@ protected:
 			++first1;
 			++first2;
 		}
-                return first1!=last1 || first2 != last2;
+		return first1!=last1 || first2 != last2;
 	}
 
-	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator> 
+	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator>
 		(const multiset<Key,Compare,Allocator>& x, const multiset<Key,Compare,Allocator>& y)
 	{
 		typename multiset<Key,Compare,Allocator>::const_iterator first1 = x.begin();
@@ -345,7 +345,7 @@ protected:
 			++first1;
 			++first2;
 		}
-                return first1!=last1 && first2 == last2;
+		return first1!=last1 && first2 == last2;
 	}
 
 	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator>=
@@ -366,9 +366,9 @@ protected:
 			++first1;
 			++first2;
 		}
-                return first1!=last1;
+		return first1!=last1;
 	}
-	
+
 	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator<=
 		(const multiset<Key,Compare,Allocator>& x, const multiset<Key,Compare,Allocator>& y)
 	{
@@ -387,7 +387,7 @@ protected:
 			++first1;
 			++first2;
 		}
-                return first2!=last2;
+		return first2!=last2;
 	}
 
 	template <class Key, class Compare, class Allocator> _UCXXEXPORT void swap
@@ -404,4 +404,3 @@ protected:
 
 #endif
 
-	

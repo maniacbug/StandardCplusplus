@@ -34,19 +34,19 @@ namespace std{
 
   // subclause _lib.stream.iterators_, stream iterators:
 	template <class T, class charT = char, class traits = char_traits<charT>, class Distance = ptrdiff_t> class istream_iterator;
-	template <class T, class charT, class traits, class Distance> bool 
+	template <class T, class charT, class traits, class Distance> bool
 		operator==(const istream_iterator<T,charT,traits,Distance>& x, const istream_iterator<T,charT,traits,Distance>& y);
-	template <class T, class charT, class traits, class Distance> bool 
+	template <class T, class charT, class traits, class Distance> bool
 		operator!=(const istream_iterator<T,charT,traits,Distance>& x, const istream_iterator<T,charT,traits,Distance>& y);
 	template <class T, class charT = char, class traits = char_traits<charT> > class ostream_iterator;
 	template<class charT, class traits = char_traits<charT> > class istreambuf_iterator;
-	template <class charT, class traits> bool 
+	template <class charT, class traits> bool
 		operator==(const istreambuf_iterator<charT,traits>& a, const istreambuf_iterator<charT,traits>& b);
-	template <class charT, class traits> bool 
+	template <class charT, class traits> bool
 		operator!=(const istreambuf_iterator<charT,traits>& a, const istreambuf_iterator<charT,traits>& b);
 	template <class charT, class traits = char_traits<charT> > class ostreambuf_iterator;
 
-	
+
 	template < class T, class charT, class traits, class Distance >	class _UCXXEXPORT istream_iterator
 		: public iterator<input_iterator_tag,T,Distance,const T*, const T&>
 	{
@@ -85,14 +85,14 @@ namespace std{
 		T value;
 	};
 
-	template <class T, class charT, class traits, class Distance> _UCXXEXPORT 
+	template <class T, class charT, class traits, class Distance> _UCXXEXPORT
 		bool operator==(const istream_iterator<T,charT,traits,Distance>& x,
 		const istream_iterator<T,charT,traits,Distance>& y)
 	{
 		return x.m_equal(y);
 	}
 
-	template <class T, class charT, class traits, class Distance> _UCXXEXPORT 
+	template <class T, class charT, class traits, class Distance> _UCXXEXPORT
 		bool operator!=(const istream_iterator<T,charT,traits,Distance>& x,
 		const istream_iterator<T,charT,traits,Distance>& y)
 	{
@@ -126,7 +126,7 @@ namespace std{
 		const char* delim;
 	};
 
-	template<class charT, class traits > class _UCXXEXPORT istreambuf_iterator : 
+	template<class charT, class traits > class _UCXXEXPORT istreambuf_iterator :
 		public iterator<input_iterator_tag, charT, typename traits::off_type, charT*, charT&>
 	{
 	public:
@@ -139,7 +139,7 @@ namespace std{
 		class _UCXXEXPORT proxy{
 			charT val;
 			basic_streambuf<charT, traits> * buf;
-			
+
 			proxy(charT v, basic_streambuf<charT, traits> * b) : val(v), buf(b) { }
 		public:
 			charT operator*() { return val; }
@@ -180,7 +180,7 @@ namespace std{
 		return a.equal(b);
 	}
 
-	template <class charT, class traits> bool _UCXXEXPORT 
+	template <class charT, class traits> bool _UCXXEXPORT
 		operator!=(const istreambuf_iterator<charT,traits>& a,
 		const istreambuf_iterator<charT,traits>& b)
 	{

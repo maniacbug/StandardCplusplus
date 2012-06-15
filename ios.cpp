@@ -61,8 +61,6 @@ namespace std{
 	_UCXXEXPORT wfilebuf _wclog_filebuf;
 #endif
 
-
-
 //Then create streams
 #ifdef __UCLIBCXX_SUPPORT_COUT__
 	_UCXXEXPORT ostream cout(&_cout_filebuf);

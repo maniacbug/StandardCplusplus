@@ -120,14 +120,14 @@ namespace std{
 				}
 				++temp2;
 			}
-			
+
 		}
 		return last1;
 	}
 
 	template<class ForwardIterator1, class ForwardIterator2, class BinaryPredicate> _UCXXEXPORT
 		ForwardIterator1
-		find_first_of(ForwardIterator1 first1, ForwardIterator1 last1,	
+		find_first_of(ForwardIterator1 first1, ForwardIterator1 last1,
 			ForwardIterator2 first2, ForwardIterator2 last2,
 			BinaryPredicate pred)
 	{
@@ -139,7 +139,7 @@ namespace std{
 				}
 				++temp2;
 			}
-			
+
 		}
 		return last1;
 	}
@@ -204,7 +204,7 @@ namespace std{
 	}
 
 	template<class InputIterator1, class InputIterator2> _UCXXEXPORT
-		pair<InputIterator1, InputIterator2>	
+		pair<InputIterator1, InputIterator2>
 		mismatch(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
 	{
 		while(first1 != last1){
@@ -274,7 +274,7 @@ namespace std{
 			ForwardIterator2 first2, ForwardIterator2 last2)
 	{
 		equal_to<typename iterator_traits<ForwardIterator1>::value_type> c;
-                return search(first1, last1, first2, last2, c);
+		return search(first1, last1, first2, last2, c);
 	}
 
 
@@ -322,7 +322,7 @@ namespace std{
 			}
 			++first;
 		}
-		return first;		
+		return first;
 	}
 
 
@@ -346,7 +346,7 @@ namespace std{
 			}
 			++first;
 		}
-		return first;		
+		return first;
 
 	}
 
@@ -976,7 +976,7 @@ namespace std{
 				first = middle;
 			}
 		}
-	
+
 		if( !comp(*first, value) ){
 			return first;
 		}
@@ -1024,7 +1024,7 @@ namespace std{
 				first = middle;
 			}
 		}
-	
+
 		if( comp(value, *first) ){
 			return first;
 		}
@@ -1084,10 +1084,10 @@ namespace std{
 
 		if( !comp(*first, value) && !comp(value, *first) ){
 			return true;
-		}	
+		}
 		if( !comp(*last, value) && !comp(value, *last) ){
 			return true;
-		}	
+		}
 
 		return false;
 	}
@@ -1301,7 +1301,7 @@ namespace std{
 				while( first2 != last2 && !comp( *temp, *first2) ){
 					++first2;
 				}
-		
+
 			}else{	//They are identical - skip
 				//Elliminate duplicates
 				InputIterator1 temp = first1;
@@ -1356,7 +1356,7 @@ namespace std{
 				while( first2 != last2 && !comp( *temp, *first2) ){
 					++first2;
 				}
-		
+
 			}else{	//They are identical - skip
 				//Elliminate duplicates
 				InputIterator1 temp = first1;
@@ -1630,7 +1630,7 @@ namespace std{
 				return false;
 			}
 		}
-		
+
 
 	}
 
@@ -1640,7 +1640,7 @@ namespace std{
 		less<typename iterator_traits<BidirectionalIterator>::value_type> c;
 		return prev_permutation(first, last, c);
 	}
-	
+
 	template<class BidirectionalIterator, class Compare> _UCXXEXPORT
 		bool prev_permutation(BidirectionalIterator first, BidirectionalIterator last, Compare comp)
 	{

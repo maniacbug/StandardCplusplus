@@ -57,7 +57,7 @@ namespace std{
 
 		explicit list(const Allocator& = Allocator());
 		explicit list(size_type n, const T& value = T(), const Allocator& = Allocator());
-		template <class InputIterator> list(InputIterator first, InputIterator last, 
+		template <class InputIterator> list(InputIterator first, InputIterator last,
 			const Allocator& al= Allocator());
 		list(const list<T,Allocator>& x);
 		~list();
@@ -150,10 +150,10 @@ namespace std{
 	//List iterator
 	template <class T, class Allocator> class _UCXXEXPORT list<T, Allocator>::iter_list
 		: public std::iterator<
-			bidirectional_iterator_tag, 
-			T, 
-			typename Allocator::difference_type, 
-			typename Allocator::pointer, 
+			bidirectional_iterator_tag,
+			T,
+			typename Allocator::difference_type,
+			typename Allocator::pointer,
 			typename Allocator::reference
 		>
 	{
@@ -200,7 +200,7 @@ namespace std{
 			iter_list temp(current);
 			current = current->next;
 			return temp;
-		}		
+		}
 		iter_list & operator--(){
 			current = current->previous;
 			return *this;
@@ -299,20 +299,20 @@ namespace std{
 		y->val = v;
 	}
 
-	template<class T, class Allocator> typename list<T, Allocator>::iterator 
+	template<class T, class Allocator> typename list<T, Allocator>::iterator
 		list<T, Allocator>::begin()
 	{
 		return iterator(list_start);
 	}
 
-	
+
 	template<class T, class Allocator> typename list<T, Allocator>::const_iterator
 		list<T, Allocator>::begin() const
 	{
 		return const_iterator(list_start);
 	}
 
-	
+
 	template<class T, class Allocator> typename list<T, Allocator>::iterator
 		list<T, Allocator>::end()
 	{
@@ -452,7 +452,7 @@ namespace std{
 	}
 
 
-	template<class T, class Allocator> typename list<T, Allocator>::iterator 
+	template<class T, class Allocator> typename list<T, Allocator>::iterator
 		list<T, Allocator>::insert(iterator position, const T& x)
 	{
 		node * temp = new node(x);
@@ -576,25 +576,24 @@ namespace std{
 		//Link everything we need
 		x.list_start->previous = position.link_struct()->previous;
 		position.link_struct()->previous->next = x.list_start;
-	
+
 		position.link_struct()->previous = x.list_end->previous;
 		x.list_end->previous->next = position.link_struct();
 
 		//Clean up the other list
-		
+
 		x.list_start = x.list_end;
 		x.list_end->previous=0;
 
 	}
 
 	template<class T, class Allocator>
-                void list<T, Allocator>::splice(iterator position, list<T,Allocator>& x, iterator i)
+		void list<T, Allocator>::splice(iterator position, list<T,Allocator>& x, iterator i)
 	{
 		//Invalid conditions
 		if( x.elements == 0 || i == position || position.link_struct() == i.link_struct()->next ){
 			return;
 		}
-
 
 		//Do we need to adjust the begining pointer?
 		if(i == x.begin()){
@@ -627,7 +626,7 @@ namespace std{
 			i.link_struct()->next->previous = 0;
 			x.list_start = i.link_struct()->next;
 		}
-		
+
 		i.link_struct()->previous = position.link_struct()->previous;
 		position.link_struct()->previous->next = i.link_struct();
 
@@ -706,7 +705,7 @@ namespace std{
 		merge(x, c);
 	}
 
-	template<class T, class Allocator> template <class Compare> 
+	template<class T, class Allocator> template <class Compare>
 		void list<T, Allocator>::merge(list<T,Allocator>& x, Compare comp)
 	{
 		iterator source = x.begin();

@@ -598,7 +598,7 @@ namespace std{
 	}
 	template<class T> valarray<T> operator- (const valarray<T>& lhs, const T& rhs){
 		valarray<T> retval(lhs);
-		retval-= rhs;
+		retval -= rhs;
 		return retval;
 	}
 	template<class T> valarray<T> operator- (const T& lhs, const valarray<T>& rhs){

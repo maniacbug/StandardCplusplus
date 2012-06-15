@@ -42,7 +42,7 @@ namespace std{
 	 * require different scanf functions
 	 */
 
-	template <class C, class traits> _UCXXEXPORT 
+	template <class C, class traits> _UCXXEXPORT
 		basic_string<C, traits> _readToken(basic_istream<C, traits>& stream)
 	{
 		basic_string<C, traits> temp;
@@ -62,7 +62,7 @@ namespace std{
 		return temp;
 	}
 
-	template <class C, class traits> _UCXXEXPORT 
+	template <class C, class traits> _UCXXEXPORT
 		basic_string<C, traits> _readTokenDecimal(basic_istream<C, traits>& stream)
 	{
 		basic_string<C, traits> temp;
@@ -135,7 +135,6 @@ namespace std{
 					}
 				}else{
 					sscanf(temp.c_str(), "%hi", &var);
-		
 				}
 			}
 		}
@@ -215,7 +214,7 @@ namespace std{
 				}else{
 					sscanf(temp.c_str(), "%i", (int *)(&var) );
 				}
-			}	
+			}
 
 		}
 	};
@@ -343,8 +342,7 @@ namespace std{
 		while (
 			!traits::eq_int_type((c = is.rdbuf()->sgetc()),	eof)
 			&& isspace(c)
-                      )
-		{
+		) {
 			is.rdbuf()->sbumpc();
 		}
 		if(traits::eq_int_type(c, eof)){

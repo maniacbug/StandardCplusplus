@@ -161,7 +161,7 @@ public:
 		}
 		return retval;
 	}
-        const_iterator find(const key_type& x) const{
+	const_iterator find(const key_type& x) const{
 		const_iterator retval = lower_bound(x);
 		if(retval == end()){
 			return retval;
@@ -171,7 +171,7 @@ public:
 		}
 		return retval;
 	}
-        size_type count(const key_type& x) const{
+	size_type count(const key_type& x) const{
 		size_type retval(0);
 		const_iterator first = lower_bound(x);
 		while(first != end() && !c(x, value_to_key(*first))){
@@ -188,7 +188,7 @@ public:
 	void erase(iterator pos){
 		backing.erase(pos.base_iterator());
 	}
-        size_type erase(const key_type& x){
+	size_type erase(const key_type& x){
 		size_type count(0);
 		iterator start = lower_bound(x);
 		iterator end = upper_bound(x);
@@ -198,7 +198,7 @@ public:
 		}
 		return count;
 	}
-        void erase(iterator first, iterator last){
+	void erase(iterator first, iterator last){
 		while(first != last){
 			backing.erase(first.base_iterator());
 			++first;

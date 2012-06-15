@@ -57,9 +57,9 @@ static const _Unwind_Action _UA_HANDLER_FRAME = 4;
 static const _Unwind_Action _UA_FORCE_UNWIND = 8;
 
 const _Unwind_Exception_Class __uclibcxx_exception_class = ((((((((
-	_Unwind_Exception_Class) 'u' << 8 | (_Unwind_Exception_Class) 'l') << 8 
+	_Unwind_Exception_Class) 'u' << 8 | (_Unwind_Exception_Class) 'l') << 8
 	| (_Unwind_Exception_Class) 'i') << 8 | (_Unwind_Exception_Class) 'b') << 8
-	| (_Unwind_Exception_Class) 'C')<< 8 | (_Unwind_Exception_Class) '+') << 8 
+	| (_Unwind_Exception_Class) 'C')<< 8 | (_Unwind_Exception_Class) '+') << 8
 	| (_Unwind_Exception_Class) '+') << 8 | (_Unwind_Exception_Class) '\0');
 
 
@@ -93,14 +93,14 @@ struct _Unwind_Context;
 
 _Unwind_Reason_Code _Unwind_RaiseException ( struct _Unwind_Exception *exception_object );
 
-//_Unwind_ForcedUnwind 
+//_Unwind_ForcedUnwind
 
 typedef _Unwind_Reason_Code (*_Unwind_Stop_Fn)
 	(int version, _Unwind_Action actions,  _Unwind_Exception_Class exceptionClass,
-	struct _Unwind_Exception *exceptionObject, 
+	struct _Unwind_Exception *exceptionObject,
 	struct _Unwind_Context *context, void *stop_parameter );
 
-_Unwind_Reason_Code _Unwind_ForcedUnwind ( 
+_Unwind_Reason_Code _Unwind_ForcedUnwind (
 	struct _Unwind_Exception *exception_object, _Unwind_Stop_Fn stop,
 	void *stop_parameter );
 
@@ -127,15 +127,15 @@ _Unwind_Reason_Code (*__personality_routine)
 /*The following part is the Level II ABI which is required for compatability*/
 //This might be the only stuff that *I* need to implement
 
-struct __cxa_exception { 
+struct __cxa_exception {
 	std::type_info *exceptionType;		//Type of thrown exception
-	void (*exceptionDestructor) (void *); 	//Pointer to the destructor
+	void (*exceptionDestructor) (void *);	//Pointer to the destructor
 	unexpected_handler unexpectedHandler;	//Unexpected handler to use
 	terminate_handler terminateHandler;	//Terminate handle to use
 	__cxa_exception *nextException;		//per thread linked list
 
 	int handlerCount;			//How many handlers have caught this
-	int handlerSwitchValue;			
+	int handlerSwitchValue;
 	const char *actionRecord;
 	const char *languageSpecificData;
 	void *catchTemp;
@@ -155,13 +155,11 @@ extern "C" __cxa_eh_globals *__cxa_get_globals_fast(void);	//Same as above, assu
 extern "C" void *__cxa_allocate_exception(size_t thrown_size);	//Allocate space for exception plus header
 extern "C" void __cxa_free_exception(void *thrown_exception);	//Free space allocated from the above
 
-extern "C" void __cxa_throw (void *thrown_exception, 	//This is the actual throw call
-//	std::type_info *tinfo, 			//Type of object
-	void * tinfo, 			//Type of object
+extern "C" void __cxa_throw (void *thrown_exception,	//This is the actual throw call
+//	std::type_info *tinfo,			//Type of object
+	void * tinfo,			//Type of object
 	void (*dest) (void *) );		//Pointer to destructor destroy object
 
 
 #endif
-
-
 

@@ -150,7 +150,7 @@ namespace std{
 		inline static bool sync_with_stdio(bool = true) { return true; }
 
 	protected:
-		_UCXXEXPORT ios_base() : mLocale(), mformat(dec | skipws ), mstate(goodbit), 
+		_UCXXEXPORT ios_base() : mLocale(), mformat(dec | skipws ), mstate(goodbit),
 			mmode(), mdir(), mprecision(6), mwidth(0)
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
 			,mInit()
@@ -355,7 +355,7 @@ namespace std{
 		_UCXXEXPORT basic_ostream<charT,traits>* tie(basic_ostream<charT,traits>* tiestr){
 			basic_ostream<charT,traits>* retval= mtied;
 			mtied = tiestr;
-			return retval;			
+			return retval;
 		}
 		_UCXXEXPORT basic_streambuf<charT,traits>* rdbuf() const{
 			return mstreambuf;
@@ -398,7 +398,7 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_IOS_CHAR__
 #ifndef __UCLIBCXX_COMPILE_IOS__
-	
+
 	template <> _UCXXEXPORT void basic_ios<char, char_traits<char> >::clear(iostate state);
 	template <> _UCXXEXPORT void basic_ios<char, char_traits<char> >::setstate(iostate state);
 
@@ -432,14 +432,14 @@ namespace std{
 
 #endif	//__UCLIBCXX_HAS_WCHAR__
 
-	template <class charT, class traits> 
+	template <class charT, class traits>
 		inline typename basic_ios<charT, traits>::char_type
 		basic_ios<charT, traits>::widen(char c) const
 	{
 		return c;
 	}
 
-	template <> 
+	template <>
 		inline basic_ios<char, char_traits<char> >::char_type
 		basic_ios<char, char_traits<char> >::widen(char c) const
 	{
@@ -448,7 +448,7 @@ namespace std{
 
 #ifdef __UCLIBCXX_HAS_WCHAR__
 
-	template <> 
+	template <>
 		inline basic_ios<wchar_t, char_traits<wchar_t> >::char_type
 		basic_ios<wchar_t, char_traits<wchar_t> >::widen(char c) const
 	{
