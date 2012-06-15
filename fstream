@@ -72,9 +72,9 @@ namespace std{
 			pbuffer = new char_type[__UCLIBCXX_IOSTREAM_BUFSIZE__];
 			gbuffer = new char_type[__UCLIBCXX_IOSTREAM_BUFSIZE__];
 
-			setp(pbuffer, pbuffer + __UCLIBCXX_IOSTREAM_BUFSIZE__);
+			this->setp(pbuffer, pbuffer + __UCLIBCXX_IOSTREAM_BUFSIZE__);
 			//Position get buffer so that there is no data available
-			setg(gbuffer, gbuffer + __UCLIBCXX_IOSTREAM_BUFSIZE__,
+			this->setg(gbuffer, gbuffer + __UCLIBCXX_IOSTREAM_BUFSIZE__,
 				gbuffer + __UCLIBCXX_IOSTREAM_BUFSIZE__);
 		}
 
