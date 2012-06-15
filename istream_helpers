@@ -103,12 +103,38 @@ namespace std{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, bool & var)
 		{
+			/* 22.4.2.1.2.4 */
 			basic_string<char, traits > temp;
 			temp = _readToken( stream);
-			if(temp == "true" || temp == "True" || temp == "TRUE" || temp == "1"){
-				var = true;
-			}else{
-				var = false;
+			if (stream.flags() & ios_base::boolalpha) {
+				if (temp == "true") // truename()
+					var = true;
+				else {
+					var = false;
+					if (temp != "false") // falsename()
+						stream.setstate(ios_base::failbit);
+				}
+			} else {
+				long int i = 0;
+				int ret;
+				if (stream.flags() & ios_base::dec) {
+					ret = sscanf(temp.c_str(), "%ld", &i );
+				} else {
+					if (stream.flags() & ios_base::oct) {
+						ret = sscanf(temp.c_str(), "%lo", (unsigned long int *)(&i));
+					} else if (stream.flags() & ios_base::hex) {
+						if (stream.flags() & ios_base::uppercase) {
+							ret = sscanf(temp.c_str(), "%lX", (unsigned long int *)(&i));
+						} else {
+							ret = sscanf(temp.c_str(), "%lx", (unsigned long int *)(&i));
+						}
+					} else {
+						ret = sscanf(temp.c_str(), "%li", &i);
+					}
+				}
+				if (ret != 1 || i >> 1)
+					stream.setstate(ios_base::failbit);
+				var = ret == 1 && bool(i);
 			}
 		}
 	};
