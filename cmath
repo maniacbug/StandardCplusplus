@@ -22,8 +22,33 @@
 #ifndef __STD_HEADER_CMATH
 #define __STD_HEADER_CMATH 1
 
-namespace std{
 #if ! defined(__AVR__)
+# undef abs
+# undef acos
+# undef asin
+# undef atan
+# undef atan2
+# undef ceil
+# undef cos
+# undef cosh
+# undef exp
+# undef fabs
+# undef floor
+# undef fmod
+# undef frexp
+# undef ldexp
+# undef log
+# undef log10
+# undef modf
+# undef pow
+# undef sin
+# undef sinh
+# undef sqrt
+# undef tan
+# undef tanh
+
+namespace std {
+
 	using ::acos;
 	using ::asin;
 	using ::atan;
@@ -47,6 +72,7 @@ namespace std{
 	using ::tan;
 	using ::tanh;
 
+# ifndef __CORRECT_ISO_CPP_MATH_H_PROTO
 	inline float abs  (float x){
 		return fabsf(x);
 	}
@@ -101,9 +127,11 @@ namespace std{
 	inline float pow  (float x, float y){
 		return powf(x, y);
 	}
+# if 1 // DR 550 removed this
 	inline float pow  (float x, int y){
 		return pow((double)x, (double)y);
 	}
+# endif
 	inline float sin  (float x){
 		return sinf(x);
 	}
@@ -126,7 +154,7 @@ namespace std{
 		return pow((double)x, (double)y);
 	}
 
-#ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
+#  ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
 	inline long double abs  (long double x){
 		return fabsl(x);
 	}
@@ -199,9 +227,10 @@ namespace std{
 	inline long double tanh (long double x){
 		return tanhl(x);
 	}
-#endif	//	 __UCLIBCXX_HAS_LONG_DOUBLE__
-#endif // ! defined(__AVR__)
+#  endif	//	 __UCLIBCXX_HAS_LONG_DOUBLE__
+# endif	//	 __CORRECT_ISO_CPP_MATH_H_PROTO
 }
+#endif // ! defined(__AVR__)
 
 #endif	//__STD_HEADER_CMATH
 
