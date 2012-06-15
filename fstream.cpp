@@ -175,4 +175,4 @@ template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
 
 }
 
-#endif // not ARDUINO
+#endif // not __AVR__
