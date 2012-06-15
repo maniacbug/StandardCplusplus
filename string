@@ -426,7 +426,7 @@ public:
 	}
 	_UCXXEXPORT size_type find (Ch c, size_type pos = 0) const{
 		for(size_type i = pos; i < length(); ++i){
-			if(operator[](i) == c){
+			if(this->operator[](i) == c){
 				return i;
 			}
 		}
@@ -456,7 +456,7 @@ public:
 	_UCXXEXPORT size_type find_first_of(const basic_string& str, size_type pos = 0) const{
 		for(size_type i = pos; i < length(); ++i){
 			for(size_type j = 0; j < str.length() ; ++j){
-				if( Tr::eq(str[j], operator[](i)) ){
+				if( Tr::eq(str[j], this->operator[](i)) ){
 					return i;
 				}
 			}
@@ -472,7 +472,7 @@ public:
 	}
 	_UCXXEXPORT size_type find_first_of(Ch c, size_type pos = 0) const{
 		for(size_type i = pos; i< length(); ++i){
-			if( Tr::eq(operator[](i), c) ){
+			if( Tr::eq(this->operator[](i), c) ){
 				return i;
 			}
 		}
@@ -485,7 +485,7 @@ public:
 		}
 		for(size_type i = pos; i >0 ; --i){
 			for(size_type j = 0 ; j < str.length(); ++j){
-				if( Tr::eq(operator[](i-1), str[j]) ){
+				if( Tr::eq(this->operator[](i-1), str[j]) ){
 					return i-1;
 				}
 			}
@@ -503,7 +503,7 @@ public:
 			pos = length();
 		}
 		for(size_type i = pos; i >0 ; --i){
-			if( Tr::eq(operator[](i-1), c) ){
+			if( Tr::eq(this->operator[](i-1), c) ){
 				return i-1;
 			}
 		}
@@ -515,7 +515,7 @@ public:
 		for(size_type i = pos; i < length(); ++i){
 			foundCharacter = false;
 			for(size_type j = 0; j < str.length() ; ++j){
-                                if( Tr::eq(str[j], operator[](i)) ){
+				if( Tr::eq(str[j], this->operator[](i)) ){
 					foundCharacter = true;
 				}
 			}
@@ -534,7 +534,7 @@ public:
 	}
 	_UCXXEXPORT size_type find_first_not_of(Ch c, size_type pos = 0) const{
 		for(size_type i = pos; i < length() ; ++i){
-			if(operator[](i) != c){
+			if(this->operator[](i) != c){
 				return i;
 			}
 		}
@@ -546,7 +546,7 @@ public:
 			xpos = pos;
 		}
 
-		while(xpos != npos && npos != str.find_first_of(at(xpos))){
+		while(xpos != npos && npos != str.find_first_of(this->at(xpos))){
 			--xpos;
 		}
 
@@ -564,7 +564,7 @@ public:
 		if(xpos > pos){
 			xpos = pos;
 		}
-		while(xpos != npos && Tr::eq(at(xpos), c)){
+		while(xpos != npos && Tr::eq(this->at(xpos), c)){
 			--xpos;
 		}
 		return xpos;
