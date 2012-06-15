@@ -614,6 +614,10 @@ public:
 	static T signaling_NaN();
 };
 
+#ifndef __SUPPORT_SNAN__
+# define __SUPPORT_SNAN__ 0
+#endif
+
 #ifdef __UCLIBCXX_HAS_FLOATS__
 template <> class numeric_limits<float> {
 public:
@@ -642,8 +646,8 @@ public:
 	static const int max_exponent   = __FLT_MAX_EXP__; //How do I properly get this?
 	static const bool has_infinity  = __FLT_HAS_INFINITY__; //I don't know, so until I can find out, I'm saying no
 	static const bool has_quiet_NaN = __FLT_HAS_QUIET_NAN__; //I don't know, so until I can find out, I'm saying no
-	static const bool has_signaling_NaN = false; //I don't know, so until I can find out, I'm saying no
 	static const bool has_denorm = __FLT_HAS_DENORM__; //I don't know, so until I can find out, I'm saying no
+	static const bool has_signaling_NaN = __SUPPORT_SNAN__;
 
 	static const bool is_iec559 = false;  //I don't know, so until I can find out, I'm saying no
 	static const bool tinyness_before = false; // more questions
@@ -651,7 +655,11 @@ public:
 	static numeric_type denorm_min () { return __FLT_DENORM_MIN__; } //How do I properly get this?
 	static numeric_type infinity () { return -1; } //How do I properly get this?
 	static numeric_type quiet_NaN () { return -1; } //How do I properly get this?
-	static numeric_type signaling_NaN () { return -1; } //How do I properly get this?
+#if __SUPPORT_SNAN__
+	static numeric_type signaling_NaN () { return __builtin_nansf(""); } //This is a gcc builtin...
+#else
+	static numeric_type signaling_NaN () { return 0; } //How do I properly get this?
+#endif
 };
 
 template <> class numeric_limits<double> {
@@ -681,8 +689,8 @@ public:
 	static const int max_exponent   = __DBL_MAX_EXP__; //How do I properly get this?
 	static const bool has_infinity  = __DBL_HAS_INFINITY__; //I don't know, so until I can find out, I'm saying no
 	static const bool has_quiet_NaN = __DBL_HAS_QUIET_NAN__; //I don't know, so until I can find out, I'm saying no
-	static const bool has_signaling_NaN = false; //I don't know, so until I can find out, I'm saying no
 	static const bool has_denorm = __DBL_HAS_DENORM__; //I don't know, so until I can find out, I'm saying no
+	static const bool has_signaling_NaN = __SUPPORT_SNAN__;
 
 	static const bool is_iec559 = false;  //I don't know, so until I can find out, I'm saying no
 	static const bool tinyness_before = false; // more questions
@@ -690,7 +698,11 @@ public:
 	static numeric_type denorm_min () { return __DBL_DENORM_MIN__; } //How do I properly get this?
 	static numeric_type infinity () { return -1; } //How do I properly get this?
 	static numeric_type quiet_NaN () { return -1; } //How do I properly get this?
-	static numeric_type signaling_NaN () { return -1; } //How do I properly get this?
+#if __SUPPORT_SNAN__
+	static numeric_type signaling_NaN () { return __builtin_nans(""); } //This is a gcc builtin...
+#else
+	static numeric_type signaling_NaN () { return 0; } //How do I properly get this?
+#endif
 };
 
 #endif // __UCLIBCXX_HAS_FLOATS__
@@ -723,8 +735,8 @@ public:
 	static const int max_exponent   = __LDBL_MAX_EXP__; //How do I properly get this?
 	static const bool has_infinity  = __LDBL_HAS_INFINITY__; //I don't know, so until I can find out, I'm saying no
 	static const bool has_quiet_NaN = __LDBL_HAS_QUIET_NAN__; //I don't know, so until I can find out, I'm saying no
-	static const bool has_signaling_NaN = false; //I don't know, so until I can find out, I'm saying no
 	static const bool has_denorm = __LDBL_HAS_DENORM__; //I don't know, so until I can find out, I'm saying no
+	static const bool has_signaling_NaN = __SUPPORT_SNAN__;
 
 	static const bool is_iec559 = false;  //I don't know, so until I can find out, I'm saying no
 	static const bool tinyness_before = false; // more questions
@@ -732,7 +744,11 @@ public:
 	static numeric_type denorm_min () { return __LDBL_DENORM_MIN__; } //How do I properly get this?
 	static numeric_type infinity () { return -1; } //How do I properly get this?
 	static numeric_type quiet_NaN () { return -1; } //How do I properly get this?
-	static numeric_type signaling_NaN () { return -1; } //How do I properly get this?
+#if __SUPPORT_SNAN__
+	static numeric_type signaling_NaN () { return __builtin_nansl (""); } //This is a gcc builtin...
+#else
+	static numeric_type signaling_NaN () { return 0; } //How do I properly get this?
+#endif
 };
 #endif //	 __UCLIBCXX_HAS_LONG_DOUBLE__
 
