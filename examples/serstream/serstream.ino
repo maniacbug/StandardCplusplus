@@ -11,6 +11,8 @@ namespace std
   ohserialstream cout(Serial);
 }
 
+extern void more(void);
+
 void setup(void)
 {
   Serial.begin(57600);
@@ -21,11 +23,16 @@ void setup(void)
   cout << F("so you can use as many F() strings as you want!") << endl;
 
   float fmax = __FLT_MAX__, fmin = __FLT_MIN__;
-  cout.precision(9);
+  cout.precision(7);
   cout << "Float " << scientific << fmax << endl; 
   cout << "Float " << scientific << fmin << endl;
 
+  more();
+
   cout << "+OK" << endl;
+
+  int n = 3;
+  int (*button)[3] = new int[n][3];
 }
 
 void loop(void)
