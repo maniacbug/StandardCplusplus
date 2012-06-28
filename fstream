@@ -29,6 +29,8 @@
 #include <ostream>
 #include <char_traits>
 
+#ifndef __AVR__ // AVR-LibC has no concept of a file.
+
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -665,11 +667,12 @@ template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
 #endif
 #endif
 
-
-
 }
 
 #pragma GCC visibility pop
+
+
+#endif // __AVR__
 
 #endif
 
