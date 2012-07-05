@@ -130,7 +130,6 @@
 #  endif
 
 #  ifndef modff
-#   define modff modf
 #   define WORKAROUND_modf
 #  endif
 
@@ -243,7 +242,14 @@ namespace std {
 		return ::log10f(x);
 	}
 	inline float modf (float x, float* inptr){
+# ifdef WORKAROUND_modf
+		double intpart;
+		float ret = static_cast<float>(::modf(static_cast<double>(x), & intpart));
+		*inptr = static_cast<float>(intpart);
+		return ret;
+# else
 		return ::modff(x, inptr);
+# endif
 	}
 	inline float pow  (float x, float y){
 		return ::powf(x, y);
