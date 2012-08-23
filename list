@@ -560,7 +560,7 @@ namespace std{
 		x.elements = 0;
 
 
-		//Chaining to the begining
+		//Chaining to the beginning
 		if(position == begin()){
 			x.list_end->previous->next = list_start;
 			list_start->previous = x.list_end->previous;
@@ -595,14 +595,14 @@ namespace std{
 			return;
 		}
 
-		//Do we need to adjust the begining pointer?
+		//Do we need to adjust the beginning pointer?
 		if(i == x.begin()){
 			x.list_start = x.list_start->next;
 			x.list_start->previous = 0;
 		}
 
 
-		//Insert at begining special case
+		//Insert at beginning special case
 		if(position == begin()){
 
 			i.link_struct()->previous->next = i.link_struct()->next;
@@ -784,7 +784,7 @@ namespace std{
 		node * following;
 		node * temp;
 
-		//Need to move the list_end element to the begining
+		//Need to move the list_end element to the beginning
 
 		temp = list_end;
 		list_end = temp->previous;

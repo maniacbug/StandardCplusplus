@@ -92,7 +92,7 @@ namespace std{
 		typedef random_access_iterator_tag iterator_category;
 	};
 
-	//Specialization recomended by standard
+	//Specialization recommended by standard
 /*	template<class T> struct _UCXXEXPORT iterator_traits<T __far*> {
 		typedef long difference_type;
 		typedef T value_type;

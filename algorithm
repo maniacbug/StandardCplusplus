@@ -810,7 +810,7 @@ namespace std{
 				}
 			}
 
-			//Rotate the element back to the begining
+			//Rotate the element back to the beginning
 			tempb = tempe;
 			while(tempb != first){
 				iter_swap(tempb, tempb-1 );
@@ -965,7 +965,7 @@ namespace std{
 			return last;
 		}
 
-		//Now begin the actual search for the begining
+		//Now begin the actual search for the beginning
 		while( distance(first, last) > 1 ){
 			//Find middle
 			middle = first;
@@ -1428,7 +1428,7 @@ namespace std{
 			middle = end;
 		}
 
-		//Now all we do is swap the elements up to the begining
+		//Now all we do is swap the elements up to the beginning
 		--last;
 
 		while(last > middle){

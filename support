@@ -124,7 +124,7 @@ _Unwind_Reason_Code (*__personality_routine)
 	struct _Unwind_Context *context);		//Unwinder state information
 
 
-/*The following part is the Level II ABI which is required for compatability*/
+/*The following part is the Level II ABI which is required for compatibility*/
 //This might be the only stuff that *I* need to implement
 
 struct __cxa_exception {

@@ -223,7 +223,7 @@ namespace std{
 			if(basic_streambuf<charT,traits>::eback() == basic_streambuf<charT,traits>::gptr()){	//Buffer is full
 				return traits::to_int_type(*basic_streambuf<charT,traits>::gptr());
 			}
-			//Shift entire buffer back to the begining
+			//Shift entire buffer back to the beginning
 			size_t offset = basic_streambuf<charT,traits>::gptr() - basic_streambuf<charT,traits>::eback();
 			size_t amountData = basic_streambuf<charT,traits>::egptr() - basic_streambuf<charT,traits>::gptr();
 
