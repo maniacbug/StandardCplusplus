@@ -30,7 +30,14 @@ namespace std{
 	using ::system;
 #endif // ! defined(__AVR__)
 	using ::abort;
+#if defined(abs)
+# undef abs
+	inline int abs(int v) {
+		return __builtin_abs(v);
+	}
+#else
 	using ::abs;
+#endif
 	using ::atol;
 	using ::atof;
 	using ::atoi;
@@ -39,7 +46,14 @@ namespace std{
 	using ::div;
 	using ::exit;
 	using ::free;
+#if defined(labs)
+# undef labs
+	inline long labs(long v) {
+		return __builtin_labs(v);
+	}
+#else
 	using ::labs;
+#endif
 	using ::ldiv;
 	using ::malloc;
 	using ::qsort;
