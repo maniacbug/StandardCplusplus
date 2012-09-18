@@ -26,6 +26,9 @@
 
 #pragma GCC visibility push(default)
 
+#undef min
+#undef max
+
 namespace std{
 
 enum float_round_style{
