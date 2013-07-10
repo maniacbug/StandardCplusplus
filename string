@@ -82,7 +82,7 @@ public:
 		if(n == npos){
 			__throw_out_of_range();
 		}
-		if(s > 0){
+		if(s){
 			resize(n);
 			Tr::copy(vector<Ch, A>::data, s, vector<Ch, A>::elements);
 		}
@@ -426,7 +426,7 @@ public:
 	}
 	_UCXXEXPORT size_type find (Ch c, size_type pos = 0) const{
 		for(size_type i = pos; i < length(); ++i){
-			if(operator[](i) == c){
+			if(this->operator[](i) == c){
 				return i;
 			}
 		}
