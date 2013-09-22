@@ -29,7 +29,8 @@
 /*
  * STL and Code Expansion
  */
-#define __UCLIBCXX_STL_BUFFER_SIZE__ 32
+//#define __UCLIBCXX_STL_BUFFER_SIZE__ 32
+#define __UCLIBCXX_STL_BUFFER_SIZE__ 8
 #undef __UCLIBCXX_CODE_EXPANSION__
 
 /*
