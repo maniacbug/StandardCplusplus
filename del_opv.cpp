@@ -21,6 +21,7 @@
 #include <cstdlib>
 #include <func_exception>
 
-_UCXXEXPORT void operator delete[](void * ptr) throw(){
-	free(ptr);
-}
+// Arduino now defines this.
+//_UCXXEXPORT void operator delete[](void * ptr) throw(){
+//	free(ptr);
+//}
