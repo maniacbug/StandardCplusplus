@@ -74,7 +74,7 @@ public:
 	typedef typename std::reverse_iterator<const_iterator>		const_reverse_iterator;
 
 
-	explicit __base_associative(const Compare& comp, const Allocator& A, const key_type (*v_to_k)(const value_type))
+	explicit __base_associative(const Compare& comp, const Allocator& , const key_type (*v_to_k)(const value_type))
 		: c(comp), value_to_key(v_to_k) { }
 protected:
 	__base_associative(const associative_type& x)
@@ -511,7 +511,7 @@ public:
 
 	pair<iterator, bool> insert(const value_type& x){
 		pair<iterator, bool> retval;
-		iterator location = lower_bound(value_to_key(x));
+		iterator location = lower_bound(this->value_to_key(x));
 		retval.second = true;
 		//Empty list or need to insert at end
 		if(end() == location){
@@ -520,7 +520,7 @@ public:
 			return retval;
 		}
 		//Something in the list
-		if(c(value_to_key(x), value_to_key(*location))){
+		if(c(this->value_to_key(x), this->value_to_key(*location))){
 			location = backing.insert(location.base_iterator(), x);
 			retval.first = location;
 		}else{
