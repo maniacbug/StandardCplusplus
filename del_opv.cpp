@@ -16,12 +16,15 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
+// Arduino 1.04 contains an implementation for this.
+#if ARDUINO < 104
 
 #include <new>
 #include <cstdlib>
 #include <func_exception>
 
-// Arduino now defines this.
-//_UCXXEXPORT void operator delete[](void * ptr) throw(){
-//	free(ptr);
-//}
+_UCXXEXPORT void operator delete[](void * ptr) throw(){
+	free(ptr);
+}
+
+#endif
