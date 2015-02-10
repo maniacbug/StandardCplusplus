@@ -29,6 +29,8 @@
 #include <ostream>
 #include <char_traits>
 
+#ifndef __AVR__ // AVR-LibC has no concept of a file.
+
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -72,9 +74,9 @@ namespace std{
 			pbuffer = new char_type[__UCLIBCXX_IOSTREAM_BUFSIZE__];
 			gbuffer = new char_type[__UCLIBCXX_IOSTREAM_BUFSIZE__];
 
-			setp(pbuffer, pbuffer + __UCLIBCXX_IOSTREAM_BUFSIZE__);
+			this->setp(pbuffer, pbuffer + __UCLIBCXX_IOSTREAM_BUFSIZE__);
 			//Position get buffer so that there is no data available
-			setg(gbuffer, gbuffer + __UCLIBCXX_IOSTREAM_BUFSIZE__,
+			this->setg(gbuffer, gbuffer + __UCLIBCXX_IOSTREAM_BUFSIZE__,
 				gbuffer + __UCLIBCXX_IOSTREAM_BUFSIZE__);
 		}
 
@@ -221,7 +223,7 @@ namespace std{
 			if(basic_streambuf<charT,traits>::eback() == basic_streambuf<charT,traits>::gptr()){	//Buffer is full
 				return traits::to_int_type(*basic_streambuf<charT,traits>::gptr());
 			}
-			//Shift entire buffer back to the begining
+			//Shift entire buffer back to the beginning
 			size_t offset = basic_streambuf<charT,traits>::gptr() - basic_streambuf<charT,traits>::eback();
 			size_t amountData = basic_streambuf<charT,traits>::egptr() - basic_streambuf<charT,traits>::gptr();
 
@@ -647,7 +649,6 @@ template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
 	};
 
 
-#if 0
 #ifdef __UCLIBCXX_EXPAND_FSTREAM_CHAR__
 #ifndef __UCLIBCXX_COMPILE_FSTREAM__
 
@@ -664,15 +665,14 @@ template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
 #endif // __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
 #endif
-
 #endif
-#endif
-
-
 
 }
 
 #pragma GCC visibility pop
+
+
+#endif // __AVR__
 
 #endif
 

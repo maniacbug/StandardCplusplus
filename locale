@@ -44,7 +44,7 @@ namespace std{
 		// construct/copy/destroy:
 		locale() throw(){
 			return;
-                }
+		}
 		locale(const locale& other) throw(){
 			(void)other;
 			return;

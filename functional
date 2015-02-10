@@ -60,7 +60,7 @@ namespace std{
 	template <class Arg, class Result> class pointer_to_unary_function;
 	template <class Arg, class Result> pointer_to_unary_function<Arg,Result> ptr_fun(Result (*)(Arg));
 	template <class Arg1, class Arg2, class Result> class pointer_to_binary_function;
-	template <class Arg1, class Arg2, class Result> 
+	template <class Arg1, class Arg2, class Result>
 		pointer_to_binary_function<Arg1,Arg2,Result> ptr_fun(Result (*)(Arg1,Arg2));
 
 	template<class S, class T> class mem_fun_t;
@@ -165,7 +165,7 @@ namespace std{
 			return (x && y);
 		}
 	};
-	
+
 	template <class T> struct _UCXXEXPORT logical_or : binary_function<T,T,bool> {
 		bool operator()(const T& x, const T& y) const{
 			return (x || y);
@@ -218,7 +218,7 @@ namespace std{
 
 
 	template <class Operation> class _UCXXEXPORT binder1st
-		: public unary_function<typename Operation::second_argument_type, 
+		: public unary_function<typename Operation::second_argument_type,
 			typename Operation::result_type>
 	{
 	protected:
@@ -231,7 +231,7 @@ namespace std{
 		}
 	};
 
-	
+
 	template <class Operation, class T> _UCXXEXPORT binder1st<Operation> bind1st(const Operation& op, const T& x){
 		return binder1st<Operation>(op, typename Operation::first_argument_type(x));
 	}
@@ -251,15 +251,15 @@ namespace std{
 		}
 	};
 
-	
-	template <class Operation, class T> _UCXXEXPORT 
+
+	template <class Operation, class T> _UCXXEXPORT
 		binder2nd<Operation> bind2nd(const Operation& op, const T& x)
 	{
 		return binder2nd<Operation>(op, typename Operation::second_argument_type(x));
 	}
-	
 
-	template <class Arg, class Result> class _UCXXEXPORT 
+
+	template <class Arg, class Result> class _UCXXEXPORT
 		pointer_to_unary_function : public unary_function<Arg, Result>
 	{
 	protected:
@@ -271,13 +271,13 @@ namespace std{
 		}
 	};
 
-	
+
 	template <class Arg, class Result> _UCXXEXPORT pointer_to_unary_function<Arg, Result> ptr_fun(Result (*f)(Arg)){
 		return pointer_to_unary_function<Arg, Result>(f);
 	}
 
-	
-	template <class Arg1, class Arg2, class Result>	class _UCXXEXPORT 
+
+	template <class Arg1, class Arg2, class Result>	class _UCXXEXPORT
 		pointer_to_binary_function : public binary_function<Arg1,Arg2,Result>
 	{
 	protected:
@@ -289,13 +289,13 @@ namespace std{
 		}
 	};
 
-	template <class Arg1, class Arg2, class Result> _UCXXEXPORT 
+	template <class Arg1, class Arg2, class Result> _UCXXEXPORT
 		pointer_to_binary_function<Arg1,Arg2,Result> ptr_fun(Result (*f)(Arg1, Arg2))
 	{
 		return pointer_to_binary_function<Arg1,Arg2,Result>(f);
 	}
 
-	
+
 	template <class S, class T> class _UCXXEXPORT mem_fun_t
 		: public unary_function<T*, S>
 	{
@@ -361,11 +361,11 @@ namespace std{
 	{
 	public:
 		explicit mem_fun_ref_t(S (T::*p)()) : mf(p) {  }
-		S operator()(T& p) { return (p.*mf)(); } 
+		S operator()(T& p) { return (p.*mf)(); }
 	private:
 		S (T::*mf)();
 	};
-	
+
 	template <class S, class T, class A> class _UCXXEXPORT mem_fun1_ref_t
 		: public binary_function<T, A, S>
 	{
@@ -405,13 +405,13 @@ public:
 	}
 };
 
-template <class Op1, class Op2> _UCXXEXPORT 
+template <class Op1, class Op2> _UCXXEXPORT
 inline unary_compose<Op1, Op2>
 compose1(const Op1& fn1, const Op2& fn2){
 	return unary_compose<Op1, Op2>(fn1, fn2);
 }
 
-template <class Op1, class Op2, class Op3> class _UCXXEXPORT binary_compose : 
+template <class Op1, class Op2, class Op3> class _UCXXEXPORT binary_compose :
 	public std::unary_function<typename Op2::argument_type, typename Op1::result_type>
 {
 protected:

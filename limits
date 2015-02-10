@@ -26,6 +26,9 @@
 
 #pragma GCC visibility push(default)
 
+#undef min
+#undef max
+
 namespace std{
 
 enum float_round_style{
@@ -110,38 +113,38 @@ public:
 	// General -- meaningful for all specializations.
 
 	static const bool is_specialized = false;
-	static T min();
-	static T max();
-	static const int radix;
-	static const int digits;
-	static const int digits10;
-	static const bool is_signed;
-	static const bool is_integer;
-	static const bool is_exact;
-	static const bool traps;
-	static const bool is_modulo;
-	static const bool is_bounded;
+	static T min() { return T(); }
+	static T max() { return T(); }
+	static const int radix = 0;
+	static const int digits = 0;
+	static const int digits10 = 0;
+	static const bool is_signed = false;
+	static const bool is_integer = false;
+	static const bool is_exact = false;
+	static const bool traps = false;
+	static const bool is_modulo = false;
+	static const bool is_bounded = false;
 
 	// Floating point specific.
 
-	static T epsilon();
-	static T round_error();
-	static const int min_exponent10;
-	static const int max_exponent10;
-	static const int min_exponent;
+	static T epsilon() { return T(); }
+	static T round_error() { return T(); }
+	static const int min_exponent10 = 0;
+	static const int max_exponent10 = 0;
+	static const int min_exponent = 0;
 
-	static const int max_exponent;
-	static const bool has_infinity;
-	static const bool has_quiet_NaN;
-	static const bool has_signaling_NaN;
-	static const bool is_iec559;
-	static const bool has_denorm;
-	static const bool tinyness_before;
-	static const float_round_style round_style;
-	static T denorm_min();
-	static T infinity();
-	static T quiet_NaN();
-	static T signaling_NaN();
+	static const int max_exponent = 0;
+	static const bool has_infinity = false;
+	static const bool has_quiet_NaN = false;
+	static const bool has_signaling_NaN = false;
+	static const bool is_iec559 = false;
+	static const bool has_denorm = false;
+	static const bool tinyness_before = false;
+	static const float_round_style round_style = round_toward_zero;
+	static T denorm_min() { return T(); }
+	static T infinity() { return T(); }
+	static T quiet_NaN() { return T(); }
+	static T signaling_NaN() { return T(); }
 };
 
 template <> class numeric_limits<bool> {
@@ -614,6 +617,54 @@ public:
 	static T signaling_NaN();
 };
 
+#ifndef __SUPPORT_SNAN__
+# define __SUPPORT_SNAN__ 0
+#endif
+
+#ifdef __UCLIBCXX_HAS_FLOATS__
+template <> class numeric_limits<float> {
+public:
+	typedef float numeric_type;
+
+	static const bool is_specialized = true;
+	static numeric_type min () { return __FLT_MIN__; }
+	static numeric_type max () { return __FLT_MAX__; }
+	static const int radix = __FLT_RADIX__;
+	static const int digits = __FLT_MANT_DIG__;
+	static const int digits10 = __FLT_DIG__;
+	static const bool is_signed = true;
+	static const bool is_integer = false;
+	static const bool is_exact = false;
+	static const bool traps = false; // this is a guess
+	static const bool is_modulo = false;
+	static const bool is_bounded = true;
+
+	// Floating point specific.
+
+	static numeric_type epsilon () { return __FLT_EPSILON__; }
+	static numeric_type round_error () { return 0.5; }
+	static const int min_exponent10 = __FLT_MIN_10_EXP__;
+	static const int max_exponent10 = __FLT_MAX_10_EXP__;
+	static const int min_exponent   = __FLT_MIN_EXP__;
+	static const int max_exponent   = __FLT_MAX_EXP__;
+	static const bool has_infinity  = __FLT_HAS_INFINITY__;
+	static const bool has_quiet_NaN = __FLT_HAS_QUIET_NAN__;
+	static const bool has_signaling_NaN = __SUPPORT_SNAN__;
+	static const bool has_denorm = __FLT_HAS_DENORM__;
+
+	static const bool is_iec559 = false;  //I don't know, so until I can find out, I'm saying no
+	static const bool tinyness_before = false; // more questions
+	static const float_round_style round_style = round_to_nearest; // more questions
+	static numeric_type denorm_min () { return __FLT_DENORM_MIN__; }
+	static numeric_type infinity () { return __builtin_inff(); } //This is a gcc builtin...
+	static numeric_type quiet_NaN () { return __builtin_nanf(""); } //This is a gcc builtin...
+#if __SUPPORT_SNAN__
+	static numeric_type signaling_NaN () { return __builtin_nansf(""); } //This is a gcc builtin...
+#else
+	static numeric_type signaling_NaN () { return 0; } //How do I properly get this?
+#endif
+};
+
 template <> class numeric_limits<double> {
 public:
 	typedef double numeric_type;
@@ -635,27 +686,88 @@ public:
 
 	static numeric_type epsilon () { return __DBL_EPSILON__; }
 	static numeric_type round_error () { return 0.5; }
-	static const int min_exponent10 = -1; //How do I properly get this?
-	static const int max_exponent10 = -1; //How do I properly get this?
-	static const int min_exponent   = -1; //How do I properly get this?
-	static const int max_exponent   = -1; //How do I properly get this?
-	static const bool has_infinity  = false; //I don't know, so until I can find out, I'm saying no
-	static const bool has_quiet_NaN = false; //I don't know, so until I can find out, I'm saying no
-	static const bool has_signaling_NaN = false; //I don't know, so until I can find out, I'm saying no
-	static const bool has_denorm = false; //I don't know, so until I can find out, I'm saying no
+	static const int min_exponent10 = __DBL_MIN_10_EXP__;
+	static const int max_exponent10 = __DBL_MAX_10_EXP__;
+	static const int min_exponent   = __DBL_MIN_EXP__;
+	static const int max_exponent   = __DBL_MAX_EXP__;
+	static const bool has_infinity  = __DBL_HAS_INFINITY__;
+	static const bool has_quiet_NaN = __DBL_HAS_QUIET_NAN__;
+	static const bool has_signaling_NaN = __SUPPORT_SNAN__;
+	static const bool has_denorm = __DBL_HAS_DENORM__;
 
 	static const bool is_iec559 = false;  //I don't know, so until I can find out, I'm saying no
 	static const bool tinyness_before = false; // more questions
 	static const float_round_style round_style = round_to_nearest; // more questions
-	static numeric_type denorm_min () { return -1; } //How do I properly get this?
-	static numeric_type infinity () { return -1; } //How do I properly get this?
-	static numeric_type quiet_NaN () { return -1; } //How do I properly get this?
-	static numeric_type signaling_NaN () { return -1; } //How do I properly get this?
+	static numeric_type denorm_min () { return __DBL_DENORM_MIN__; }
+	static numeric_type infinity () { return __builtin_inf(); } //This is a gcc builtin...
+	static numeric_type quiet_NaN () { return __builtin_nan(""); } //This is a gcc builtin...
+#if __SUPPORT_SNAN__
+	static numeric_type signaling_NaN () { return __builtin_nans(""); } //This is a gcc builtin...
+#else
+	static numeric_type signaling_NaN () { return 0; } //How do I properly get this?
+#endif
+};
+#endif // __UCLIBCXX_HAS_FLOATS__
+
+#ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
+template <> class numeric_limits<long double> {
+public:
+	typedef long double numeric_type;
+
+	static const bool is_specialized = true;
+	static numeric_type min () { return __LDBL_MIN__; }
+	static numeric_type max () { return __LDBL_MAX__; }
+	static const int radix = __FLT_RADIX__;
+	static const int digits = __LDBL_MANT_DIG__;
+	static const int digits10 = __LDBL_DIG__;
+	static const bool is_signed = true;
+	static const bool is_integer = false;
+	static const bool is_exact = false;
+	static const bool traps = false; // this is a guess
+	static const bool is_modulo = false;
+	static const bool is_bounded = true;
+
+	// Floating point specific.
+
+	static numeric_type epsilon () { return __LDBL_EPSILON__; }
+	static numeric_type round_error () { return 0.5; }
+	static const int min_exponent10 = __LDBL_MIN_10_EXP__;
+	static const int max_exponent10 = __LDBL_MAX_10_EXP__;
+	static const int min_exponent   = __LDBL_MIN_EXP__;
+	static const int max_exponent   = __LDBL_MAX_EXP__;
+	static const bool has_infinity  = __LDBL_HAS_INFINITY__;
+	static const bool has_quiet_NaN = __LDBL_HAS_QUIET_NAN__;
+	static const bool has_signaling_NaN = __SUPPORT_SNAN__;
+	static const bool has_denorm = __LDBL_HAS_DENORM__;
+
+	static const bool is_iec559 = false;  //I don't know, so until I can find out, I'm saying no
+	static const bool tinyness_before = false; // more questions
+	static const float_round_style round_style = round_to_nearest; // more questions
+	static numeric_type denorm_min () { return __LDBL_DENORM_MIN__; }
+	static numeric_type infinity () { return __builtin_infl (); } //This is a gcc builtin...
+	static numeric_type quiet_NaN () { return __builtin_nanl (""); } //This is a gcc builtin...
+#if __SUPPORT_SNAN__
+	static numeric_type signaling_NaN () { return __builtin_nansl (""); } //This is a gcc builtin...
+#else
+	static numeric_type signaling_NaN () { return 0; } //How do I properly get this?
+#endif
+};
+#endif //	 __UCLIBCXX_HAS_LONG_DOUBLE__
+
+template<class T> class numeric_limits<const T> : public numeric_limits<T> {
+	public:
+		typedef const T numeric_type;
 };
 
+template<class T> class numeric_limits<volatile T> : public numeric_limits<T> {
+	public:
+		typedef volatile T numeric_type;
+};
 
-
-
+template<class T> class numeric_limits<const volatile T> : public numeric_limits<T> {
+	public:
+		typedef const volatile T numeric_type;
+};
 
 }
 

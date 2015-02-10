@@ -252,6 +252,7 @@ namespace std {
 		}
 		return *this;
 	}
+
 	template <class charT, class traits> _UCXXEXPORT basic_ostream<charT,traits>& 
 		basic_ostream<charT, traits>::operator<<(basic_streambuf<charT,traits>* sb)
 	{

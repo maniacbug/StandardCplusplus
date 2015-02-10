@@ -42,23 +42,23 @@ namespace std{
 		virtual public basic_ios<charT,traits>
 	{
 	public:
-	
+
 		typedef charT                     char_type;
 		typedef typename traits::int_type int_type;
 		typedef typename traits::pos_type pos_type;
 		typedef typename traits::off_type off_type;
 		typedef basic_streambuf<charT,traits>  streambuf_type;
 		typedef traits                    traits_type;
-    	
+
 		explicit basic_istream(basic_streambuf<charT,traits>* sb)
 			: basic_ios<charT, traits>(sb), count_last_ufmt_input(0)
 		{
 			basic_ios<charT, traits>::init(sb);
 		}
 		virtual ~basic_istream() { }
-	
+
 		class sentry;
-	
+
 		basic_istream<charT,traits>& operator>>(basic_istream<charT,traits>& (*pf)(basic_istream<charT,traits>&));
 		basic_istream<charT,traits>& operator>>(basic_ios<charT,traits>& (*pf)(basic_ios<charT,traits>&));
 		basic_istream<charT,traits>& operator>>(ios_base& (*pf)(ios_base&));
@@ -77,18 +77,18 @@ namespace std{
 		basic_istream<charT,traits>& operator>>(double& f);
 		basic_istream<charT,traits>& operator>>(long double& f);
 #endif
-	
+
 		_UCXXEXPORT streamsize gcount() const{
 			return count_last_ufmt_input;
 		}
-		
+
 		_UCXXEXPORT int_type get();		//below
-		_UCXXEXPORT basic_istream<charT,traits>& get(char_type& c); 	//Below
-		
+		_UCXXEXPORT basic_istream<charT,traits>& get(char_type& c);	//Below
+
 		_UCXXEXPORT basic_istream<charT,traits>& get(char_type* s, streamsize n){
 			return get(s, n, basic_ios<charT,traits>::widen('\n'));
 		}
-		
+
 		_UCXXEXPORT basic_istream<charT,traits>& get(char_type* s, streamsize n, char_type delim){
 			sentry(*this, true);
 			streamsize i = 0;
@@ -117,11 +117,11 @@ namespace std{
 			count_last_ufmt_input = i;
 			return *this;
 		}
-		
+
 		_UCXXEXPORT basic_istream<charT,traits>& get(basic_streambuf<char_type,traits>& sb){
 			return get(sb, basic_ios<charT,traits>::widen('\n'));
 		}
-		
+
 		_UCXXEXPORT basic_istream<charT,traits>& get(basic_streambuf<char_type,traits>& sb, char_type delim){
 			sentry(*this, true);
 			streamsize i = 0;
@@ -150,13 +150,13 @@ namespace std{
 				}
 				++i;
 				basic_ios<charT, traits>::mstreambuf->sbumpc();
-			}		
+			}
 		}
-		
+
 		_UCXXEXPORT basic_istream<charT,traits>& getline(char_type* s, streamsize n){
 			return getline(s, n, basic_ios<charT,traits>::widen('\n'));
 		}
-		
+
 		_UCXXEXPORT basic_istream<charT,traits>& getline(char_type* s, streamsize n, char_type delim){
 			sentry(*this, true);
 			streamsize i = 0;
@@ -186,7 +186,7 @@ namespace std{
 			s[n-1] = traits::eos();
 			return *this;
 		}
-		
+
 		_UCXXEXPORT basic_istream<charT,traits>& ignore (streamsize n = 1, int_type delim = traits::eof()){
 			sentry(*this, true);
 			streamsize i;
@@ -204,7 +204,7 @@ namespace std{
 			}
 			return *this;
 		}
-		
+
 		_UCXXEXPORT int_type peek(){
 			if(basic_ios<charT,traits>::good() == false){
 				return traits::eof();
@@ -216,7 +216,7 @@ namespace std{
 				return basic_ios<charT, traits>::mstreambuf->sgetc();
 			}
 		}
-		
+
 		_UCXXEXPORT basic_istream<charT,traits>& read (char_type* s, streamsize n){
 			sentry(*this, true);
 			streamsize i;
@@ -236,7 +236,7 @@ namespace std{
 			count_last_ufmt_input = n;
 			return *this;
 		}
-		
+
 		_UCXXEXPORT streamsize readsome(char_type* s, streamsize n){
 			sentry(*this, true);
 			if(!basic_ios<charT,traits>::good()){
@@ -244,20 +244,20 @@ namespace std{
 				basic_ios<charT,traits>::setstate(ios_base::failbit);
 				return 0;
 			}
-			
+
 			if( basic_ios<charT, traits>::mstreambuf->in_avail()  ==  -1){
 				count_last_ufmt_input=0;
 				basic_ios<charT,traits>::setstate(ios_base::eofbit);
 				return 0;
 			}
-			
+
 			if(n > basic_ios<charT, traits>::mstreambuf->in_avail() ){
 				n = basic_ios<charT, traits>::mstreambuf->in_avail();
 			}
-			
+
 			streamsize i;
 			int_type c;
-			
+
 			for(i=0;i<n;++i){
 				c = basic_ios<charT, traits>::mstreambuf->sgetc();
 				basic_ios<charT, traits>::mstreambuf->sbumpc();
@@ -266,7 +266,7 @@ namespace std{
 			count_last_ufmt_input = n;
 			return n;
 		}
-		
+
 		_UCXXEXPORT basic_istream<charT,traits>& putback(char_type c){
 			sentry(*this, true);
 			if(!basic_ios<charT,traits>::good()){
@@ -283,7 +283,7 @@ namespace std{
 			}
 			return *this;
 		}
-		
+
 		_UCXXEXPORT basic_istream<charT,traits>& unget(){
 			sentry(*this, true);
 			if(!basic_ios<charT,traits>::good()){
@@ -299,7 +299,7 @@ namespace std{
 			}
 			return *this;
 		}
-		
+
 		_UCXXEXPORT int sync(){
 			sentry(*this, true);
 			if(basic_ios<charT, traits>::mstreambuf == 0){
@@ -311,35 +311,35 @@ namespace std{
 			}
 			return 0;
 		}
-	
+
 		_UCXXEXPORT pos_type tellg(){
 			if(basic_ios<charT,traits>::fail() !=false){
 				return pos_type(-1);
 			}
 			return basic_ios<charT, traits>::mstreambuf->pubseekoff(0, ios_base::cur, ios_base::in);
 		}
-		
+
 		_UCXXEXPORT basic_istream<charT,traits>& seekg(pos_type pos){
 			 if(basic_ios<charT,traits>::fail() !=true){
-			 	basic_ios<charT, traits>::mstreambuf->pubseekpos(pos);
+				basic_ios<charT, traits>::mstreambuf->pubseekpos(pos);
 			 }
-			return *this;		
+			return *this;
 		}
-		
+
 		_UCXXEXPORT basic_istream<charT,traits>& seekg(off_type off, ios_base::seekdir dir){
 			if(basic_ios<charT,traits>::fail() !=true){
 				basic_ios<charT, traits>::mstreambuf->pubseekoff(off, dir);
 			}
 			return *this;
 		}
-		
+
 	protected:
 		_UCXXEXPORT basic_istream(const basic_istream<charT,traits> &): basic_ios<charT, traits>() { }
 		_UCXXEXPORT basic_istream<charT,traits> & operator=(const basic_istream<charT,traits> &){ return *this; }
 		streamsize count_last_ufmt_input;
 
 	};
-	
+
 	template <class charT,class traits = char_traits<charT> > class _UCXXEXPORT basic_istream<charT,traits>::sentry {
 		bool ok;
 	public:
@@ -362,7 +362,7 @@ namespace std{
 			return ok;
 		}
 	};
-	
+
 	//Template implementations of basic_istream functions which may be partially specialized
 	//For code reduction
 
@@ -395,9 +395,9 @@ namespace std{
 		}
 		return *this;
 	}
-		
 
-	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>& 
+
+	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
 		basic_istream<charT,traits>::operator>>(bool& n)
 	{
 		sentry(*this);
@@ -405,7 +405,7 @@ namespace std{
 		return *this;
 	}
 
-	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>& 
+	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
 		basic_istream<charT,traits>::operator>>(short& n)
 	{
 		sentry(*this);
@@ -413,7 +413,7 @@ namespace std{
 		return *this;
 	}
 
-	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>& 
+	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
 		basic_istream<charT,traits>::operator>>(unsigned short& n)
 	{
 		sentry(*this);
@@ -439,7 +439,7 @@ namespace std{
 		return *this;
 	}
 
-	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>& 
+	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
 		basic_istream<charT,traits>::operator>>(unsigned long int& n)
 	{
 		sentry(*this);
@@ -448,21 +448,21 @@ namespace std{
 	}
 
 #ifdef __UCLIBCXX_HAS_FLOATS__
-	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>& 
+	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
 		basic_istream<charT,traits>::operator>>(float& n)
 	{
 		sentry(*this);
 		__istream_readin<traits, charT, float>::readin(*this, n);
 		return *this;
 	}
-	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>& 
+	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
 		basic_istream<charT,traits>::operator>>(double& n)
 	{
 		sentry(*this);
 		__istream_readin<traits, charT, double>::readin(*this, n);
 		return *this;
 	}
-	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>& 
+	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
 		basic_istream<charT,traits>::operator>>(long double& n)
 	{
 		sentry(*this);
@@ -470,7 +470,7 @@ namespace std{
 		return *this;
 	}
 #endif
-	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>& 
+	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
 		basic_istream<charT,traits>::operator>>(void *& n)
 	{
 		sentry(*this);
@@ -538,7 +538,7 @@ namespace std{
 		return is;
 	}
 
-	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>& 
+	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
 		basic_istream<charT,traits>::operator>>(basic_istream<charT,traits>& (*pf)(basic_istream<charT,traits>&))
 	{
 		sentry(*this);
@@ -546,7 +546,7 @@ namespace std{
 		return *this;
 	}
 
-	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>& 
+	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
 		basic_istream<charT,traits>::operator>>(basic_ios<charT,traits>& (*pf)(basic_ios<charT,traits>&))
 	{
 		sentry(*this);
@@ -590,8 +590,6 @@ namespace std{
 
 #endif
 #endif
-	
-
 
 }
 
