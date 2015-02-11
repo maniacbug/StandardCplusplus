@@ -19,7 +19,7 @@
 
 
 #include<memory>
-#include<utility.h>
+#include<utility>
 #include<iterator>
 #include<functional>
 #include<list>
@@ -39,7 +39,7 @@ namespace std{
  *	considerations about how to address multiple entries with the same key.
  *	The goal is that the tree/storage code should be here, and managing
  *	single or multiple counts will be left to subclasses.
- *	Yes, inheritence for the purpose of code sharing is usually a bad idea.
+ *	Yes, inheritance for the purpose of code sharing is usually a bad idea.
  *	However, since our goal is to reduce the total amount of code written
  *	and the overall binary size, this seems to be the best approach possible.
  */
@@ -161,7 +161,7 @@ public:
 		}
 		return retval;
 	}
-        const_iterator find(const key_type& x) const{
+	const_iterator find(const key_type& x) const{
 		const_iterator retval = lower_bound(x);
 		if(retval == end()){
 			return retval;
@@ -171,7 +171,7 @@ public:
 		}
 		return retval;
 	}
-        size_type count(const key_type& x) const{
+	size_type count(const key_type& x) const{
 		size_type retval(0);
 		const_iterator first = lower_bound(x);
 		while(first != end() && !c(x, value_to_key(*first))){
@@ -188,7 +188,7 @@ public:
 	void erase(iterator pos){
 		backing.erase(pos.base_iterator());
 	}
-        size_type erase(const key_type& x){
+	size_type erase(const key_type& x){
 		size_type count(0);
 		iterator start = lower_bound(x);
 		iterator end = upper_bound(x);
@@ -198,7 +198,7 @@ public:
 		}
 		return count;
 	}
-        void erase(iterator first, iterator last){
+	void erase(iterator first, iterator last){
 		while(first != last){
 			backing.erase(first.base_iterator());
 			++first;
@@ -604,7 +604,7 @@ public:
 	}
 
 	iterator insert(const value_type& x){
-		iterator location = lower_bound(value_to_key(x));
+		iterator location = lower_bound(this->value_to_key(x));
 
 		if(location == begin()){
 			backing.push_front(x);

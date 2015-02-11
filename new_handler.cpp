@@ -21,7 +21,7 @@
 
 const std::nothrow_t std::nothrow = { };
 
-//Name selected to be compatable with g++ code
+//Name selected to be compatible with g++ code
 std::new_handler __new_handler;
 
 _UCXXEXPORT std::new_handler std::set_new_handler(std::new_handler new_p) throw(){

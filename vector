@@ -59,13 +59,13 @@ namespace std{
 		typedef std::reverse_iterator<iterator> reverse_iterator;
 		typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
-		explicit _UCXXEXPORT vector(const Allocator& al= Allocator()): data(0), //defaultValue(T()), 
+		explicit _UCXXEXPORT vector(const Allocator& al= Allocator()): data(0), //defaultValue(T()),
 			data_size(__UCLIBCXX_STL_BUFFER_SIZE__), elements(0), a(al)
 		{
 			data = a.allocate(data_size);
 		}
 
-		explicit _UCXXEXPORT vector(size_type n, const T& value = T(), const Allocator& al= Allocator()) : 
+		explicit _UCXXEXPORT vector(size_type n, const T& value = T(), const Allocator& al= Allocator()) :
 			data(0), data_size(0), elements(0), a(al)
 		{
 			data_size = n + __UCLIBCXX_STL_BUFFER_SIZE__;
@@ -74,7 +74,7 @@ namespace std{
 			resize(n, value);
 		}
 
-		template <class InputIterator> _UCXXEXPORT 
+		template <class InputIterator> _UCXXEXPORT
 			vector(InputIterator first, InputIterator last, const Allocator& al = Allocator()):
 			data(0), data_size(__UCLIBCXX_STL_BUFFER_SIZE__), elements(0), a(al)
 		{
@@ -91,7 +91,7 @@ namespace std{
 
 			for(size_type i = 0; i < elements; i++){
 				a.construct(data+i, x.data[i]);
-			}	
+			}
 		}
 #if __cplusplus >= 201103L
 		_UCXXEXPORT vector(initializer_list<T> x,const Allocator& al= Allocator()):
@@ -276,7 +276,7 @@ namespace std{
 			}
 		}
 
-		template <class InputIterator> _UCXXEXPORT 
+		template <class InputIterator> _UCXXEXPORT
 			void _insert_from_iterator(iterator position, InputIterator first, InputIterator last)
 		{
 			T temp;
@@ -375,7 +375,7 @@ namespace std{
 
 
 	template<class T, class Allocator> _UCXXEXPORT void vector<T, Allocator>::reserve(size_type n){
-		if(n > data_size){              //We never shrink...
+		if(n > data_size){	//We never shrink...
 			T * temp_ptr = data;
 			size_type temp_size = data_size;
 
@@ -491,7 +491,7 @@ namespace std{
 		operator< (const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 	{
 		less<typename iterator_traits<typename vector<T,Allocator>::iterator >::value_type> c;
-                return lexicographical_compare(x.begin(), x.end(), y.begin(), y.end(), c);
+		return lexicographical_compare(x.begin(), x.end(), y.begin(), y.end(), c);
 	}
 	template <class T, class Allocator> _UCXXEXPORT bool
 		operator!=(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
@@ -502,19 +502,19 @@ namespace std{
 		operator> (const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 	{
 		greater<typename iterator_traits<typename vector<T,Allocator>::iterator >::value_type> c;
-                return lexicographical_compare(x.begin(), x.end(), y.begin(), y.end(), c);
+		return lexicographical_compare(x.begin(), x.end(), y.begin(), y.end(), c);
 	}
 	template <class T, class Allocator> _UCXXEXPORT bool
 		operator>=(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 	{
 		greater_equal<typename iterator_traits<typename vector<T,Allocator>::iterator >::value_type> c;
-                return lexicographical_compare(x.begin(), x.end(), y.begin(), y.end(), c);
+		return lexicographical_compare(x.begin(), x.end(), y.begin(), y.end(), c);
 	}
 	template <class T, class Allocator> _UCXXEXPORT bool
 		operator<=(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 	{
 		less_equal<typename iterator_traits<typename vector<T,Allocator>::iterator >::value_type> c;
-                return lexicographical_compare(x.begin(), x.end(), y.begin(), y.end(), c);
+		return lexicographical_compare(x.begin(), x.end(), y.begin(), y.end(), c);
 	}
 
 	template <class T, class Allocator> _UCXXEXPORT void swap(vector<T,Allocator>& x, vector<T,Allocator>& y){
