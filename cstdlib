@@ -46,14 +46,7 @@ namespace std{
 	using ::div;
 	using ::exit;
 	using ::free;
-#if defined(labs)
-# undef labs
-	inline long labs(long v) {
-		return __builtin_labs(v);
-	}
-#else
 	using ::labs;
-#endif
 	using ::ldiv;
 	using ::malloc;
 	using ::qsort;
