@@ -130,10 +130,11 @@ namespace std
 	 */
 
 		virtual int_type underflow(){
-			if(_serial.available())
-				return _serial.peek();
-			else 
-				return traits::eof();
+			// There is no EOF condition on a serial stream.
+			// underflow() and uflow() should block, reproducing the 
+			// OS behavior when there are no charaters to read.
+			while (! _serial.available()) { /* wait */ }
+			return _serial.peek();
 		}
 
 	/*
@@ -141,10 +142,9 @@ namespace std
 	 */
 
 		virtual int_type uflow(){
-			if(_serial.available())
-				return _serial.read();
-			else 
-				return traits::eof();
+			// See underflow() above
+			while (! _serial.available()) { /* wait */ }
+			return _serial.read();
 		}
 
 	/*
