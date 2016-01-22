@@ -8,5 +8,5 @@
     "url": "https://github.com/maniacbug/StandardCplusplus.git"
   },
   "frameworks": "arduino",
-  "platforms": "*"
+  "platforms": "atmelavr"
 }
