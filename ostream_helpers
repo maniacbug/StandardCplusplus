@@ -245,10 +245,13 @@ namespace std{
 		{
 			char buffer[32];
 			int length;
-			
-			//length = snprintf(buffer, 32, "%*.*f",static_cast<int>(stream.width()),static_cast<int>(stream.precision()), f);
+
+#ifdef __AVR__
 			length = strlen(dtostrf(f, static_cast<int>(stream.width()), static_cast<int>(stream.precision()), buffer));
-					
+#else
+			length = snprintf(buffer, 32, "%*.*f",static_cast<int>(stream.width()),static_cast<int>(stream.precision()), f);
+#endif
+
 			stream.printout(buffer, length);
 			if(stream.flags() & ios_base::unitbuf){
 				stream.flush();
