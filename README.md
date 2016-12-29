@@ -24,7 +24,7 @@ Be sure to reset your Arduino IDE after installing it.
 
 ## How do I use it?
 
-You need an extra #include before any C++ standard library #includes:
+You need an extra #include. It has to come before C++ standard library #includes:
 
 ```C++
 #include <StandardCplusplus.h>
