@@ -16,27 +16,12 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-
+//Header file for deque data structure - also pronounced as "deck"
 #include <deque>
 
 
 namespace std{
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
+	
 }
-
-
-
-
