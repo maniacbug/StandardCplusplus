@@ -22,6 +22,18 @@ library is in /home/maniacbug/Source/Arduino/libraries/StandardCplusplus .
 
 Be sure to reset your Arduino IDE after installing it.
 
+## How do I use it?
+
+You need an extra #include. It has to come before C++ standard library #includes:
+
+```C++
+#include <StandardCplusplus.h>
+```
+
+Otherwise, you will see cryptic messages like this:
+
+    fatal error: vector: No such file or directory
+
 ## How do I try it out?
 
 From the Arduino IDE, navigate the menus to:
