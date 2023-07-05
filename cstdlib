@@ -57,6 +57,9 @@ namespace std{
 	using ::wcstombs;
 #endif
 
+// Undefine `abs`, because Arduino already has it.
+// https://github.com/maniacbug/StandardCplusplus/issues/2#issuecomment-32912640
+#undef abs
 	inline long abs(long i){
 		return labs(i);
 	}
