@@ -37,10 +37,10 @@ namespace std{
 }
 
 
-_UCXXEXPORT void* operator new(std::size_t numBytes) throw(std::bad_alloc);
+_UCXXEXPORT void* operator new(std::size_t numBytes) noexcept(false);
 _UCXXEXPORT void operator delete(void* ptr) throw();
 
-_UCXXEXPORT void* operator new[](std::size_t numBytes) throw(std::bad_alloc);
+_UCXXEXPORT void* operator new[](std::size_t numBytes) noexcept(false);
 _UCXXEXPORT void operator delete[](void * ptr) throw();
 
 #ifndef NO_NOTHROW
